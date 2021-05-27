@@ -41,7 +41,6 @@ var cursors;
 var score = 0;
 var gameOver = false;
 var scoreText;
-var fleche;
 
 var game = new Phaser.Game(config);
 
@@ -95,17 +94,10 @@ function create ()
         repeat: -1
     });
 
-    var direction = 'right';
-
-
-    //  Input Events
+     //  Input Events
     cursors = this.input.keyboard.createCursorKeys();
 
-    fleche = game.input.keyboard.addkey('S');
-    function tirer(player)  {
-        alert ("joueur en position"+player.x + ","+player.y + " ; direction du tir : "+ player.direction) ;
-    }
-
+    
     //  Some stars to collect, 12 in total, evenly spaced 70 pixels apart along the x axis
     star = this.physics.add.group({
         key: 'star',
@@ -137,13 +129,11 @@ function update ()
 
     if (cursors.left.isDown)
     {
-        player.direction = 'left';
         player.setVelocityX(-160);
         player.anims.play('left', true);
     }
     else if (cursors.right.isDown)
     {
-        player.direction = 'right';
         player.setVelocityX(160);
         player.anims.play('right', true);
     }
@@ -159,9 +149,6 @@ function update ()
         player.setVelocityY(-330);
     }
 
-    if ( Phaser.input.keyboard.isdown(fleche)) {
-        tirer(player, direction);
-    }
 }
 
 function collectStar (player, star, score)
