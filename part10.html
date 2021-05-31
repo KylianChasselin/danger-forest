@@ -41,6 +41,7 @@ var cursors;
 var score = 0;
 var gameOver = false;
 var scoreText;
+var gobelin;
 
 var game = new Phaser.Game(config);
 
@@ -48,9 +49,10 @@ function preload ()
 {
     this.load.image('sky', 'assets/sky.png');
     this.load.image('ground', 'assets/platform.png');
-    this.load.image('star', 'assets/star.png');
+    this.load.image('star', 'assets/flecheverticale.png');
     this.load.image('bomb', 'assets/bomb.png');
     this.load.spritesheet('dude', 'assets/dude.png', { frameWidth: 32, frameHeight: 48 });
+    this.load.spritesheet('gobelin', 'assets/gobelin.png', { frameWidth: 32, frameHeight: 48 });
 }
 
 function create ()
@@ -62,16 +64,21 @@ function create ()
     platforms = this.physics.add.staticGroup();
 
     // sol de base doubler de volume 
-    platforms.create(400, 448, 'ground').setScale(2).refreshBody();
+    platforms.create(400, 415, 'ground').setScale(2).refreshBody();
+    platforms.create(1000, 415, 'ground').setScale(2).refreshBody();
 
     //  plateforme et emplacement 
-    platforms.create(1000, 448, 'ground').setScale(2).refreshBody();
     platforms.create(50, 250, 'ground');
     platforms.create(750, 220, 'ground');
 
     // perso and ses settings
     player = this.physics.add.sprite(100, 350, 'dude');
     player.setCollideWorldBounds(true);
+
+
+    //gobelin 
+    gobelin = this.physics.add.sprite(200, 150, 'gobelin');
+    gobelin.setCollideWorldBounds(true);
 
     //  animation du personnage a aller a droite ou a gauche. 
     this.anims.create({
@@ -111,6 +118,7 @@ function create ()
     //  Collide the player and the stars with the platforms
     this.physics.add.collider(player, platforms);
     this.physics.add.collider(star, platforms);
+    this.physics.add.collider(gobelin,platforms);
 
    
     //  Checks to see if the player overlaps with any of the stars, if he does call the collectStar function
@@ -150,6 +158,24 @@ function update ()
     }
 
 }
+
+
+//..................T..E..S..T.....................................
+/*ennemy = function(index,game,x,y) {
+
+    this.gobelin = game.add.sprite(x,y,'gobelin');
+    this.gobelin.anchor.setTo(300,);
+    this.gobelin.name = index.toString();
+    game.physics.enable(this.gobelin,Phaser.Physics.ARCADE);
+    this.gobelin.body.immovable = true;
+    this.gobelin.body.setCollideWorldBounds = true;
+
+    
+}
+    gobelin = new gobelin(0,game,player.x+400,player.y-200);*/
+
+//................F..I..N.....T..E..S..T................................
+
 
 function collectStar (player, star, score)
 {
