@@ -59,7 +59,7 @@ function preload ()
 function create ()
 {
     //  background
-    this.add.image(450, 250, 'sky');
+    this.add.image(2000, 250, 'sky');
 
     //  The platforms group contains the ground and the 2 ledges we can jump on
     platforms = this.physics.add.staticGroup();
@@ -128,7 +128,7 @@ function create ()
 
     //camera 
 
-    this.cameras.main.setBounds(0, 0, 3200, 1824)
+    this.cameras.main.setBounds(0, 0, 4000, 448)
     this.cameras.main.setSize(896, 800);
     this.cameras.main.startFollow(player);
 }
