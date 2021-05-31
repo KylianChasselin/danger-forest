@@ -42,6 +42,9 @@ var score = 0;
 var gameOver = false;
 var scoreText;
 var gobelin;
+var gobelin2;
+var gobelin3;
+var gobelin4;
 var camera;
 
 var game = new Phaser.Game(config);
@@ -68,6 +71,7 @@ function create ()
     platforms = this.physics.add.staticGroup();
 
     // sol de base doubler de volume 
+
     platforms.create(400, 415, 'ground').setScale(2).refreshBody();
     platforms.create(1200, 415, 'ground').setScale(2).refreshBody();
     platforms.create(2000, 415, 'ground').setScale(2).refreshBody();
@@ -78,6 +82,7 @@ function create ()
     //  PLATEFORME ET EMPLACEMENT
 
     // Premiere partie
+
     platforms.create(0, 175, 'ground').setScale(0.8).refreshBody();
     platforms.create(1100, 182, 'ground').setScale(1.2).refreshBody();
     platforms.create(810, 335, 'groundcarre');
@@ -86,6 +91,7 @@ function create ()
     platforms.create(475, 150, 'ground2').setScale(0.8).refreshBody();
 
     // Deuxieme partie
+
     platforms.create(1150,363,'groundVER');
     platforms.create(1360,-120,'groundVER');
     platforms.create(1600,275,'groundcarre').setScale(1.5).refreshBody();
@@ -93,12 +99,14 @@ function create ()
     platforms.create(1900,363,'groundVER');
 
     // Troisieme partie
+
     platforms.create(2189,363,'groundVER');
     platforms.create(2500,275,'ground').setScale(0.6).refreshBody();
     platforms.create(2800,460,'groundVER');
     platforms.create(2900,270,'ground').setScale(0.6).refreshBody();
 
     // Quatrieme partie
+
     platforms.create(3005,460,'groundVER');
     platforms.create(3025,470,'groundVER');
     platforms.create(3045,480,'groundVER');
@@ -111,16 +119,33 @@ function create ()
 
 
     // perso and ses settings
-    player = this.physics.add.sprite(50, 50, 'dude');
+
+    player = this.physics.add.sprite(2000, 50, 'dude');
     player.setCollideWorldBounds(true);
 
 
-    //gobelin 
-    gobelin = this.physics.add.sprite(200, 150, 'gobelin');
+    //gobelin
+
+    gobelin = this.physics.add.sprite(475, 100, 'gobelin');
     gobelin.setCollideWorldBounds(true);
     
+    //gobelin 2
+
+    gobelin2 = this.physics.add.sprite(1800, 250, 'gobelin');
+    gobelin2.setCollideWorldBounds(true);
+
+    //gobelin 3 
+
+    gobelin3 = this.physics.add.sprite(1230, 250, 'gobelin');
+    gobelin3.setCollideWorldBounds(true);
+
+    // gobelin 4
+
+    gobelin4 = this.physics.add.sprite(2500, 200, 'gobelin');
+    gobelin4.setCollideWorldBounds(true);
 
     //  animation du personnage a aller a droite ou a gauche. 
+
     this.anims.create({
         key: 'left',
         frames: this.anims.generateFrameNumbers('dude', { start: 0, end: 4 }),
@@ -142,10 +167,12 @@ function create ()
     });
 
      //  Input Events
+
     cursors = this.input.keyboard.createCursorKeys();
 
     
     //  Some stars to collect, 12 in total, evenly spaced 70 pixels apart along the x axis
+
     star = this.physics.add.group({
         key: 'star',
         repeat: 1,
@@ -153,15 +180,24 @@ function create ()
     });
 
     //  The score
+
     scoreText = this.add.text(16, 16, 'fleches: 0', { fontSize: '25px', fill: '#999' });
 
     //  tout les Collider
+
     this.physics.add.collider(player, platforms);
     this.physics.add.collider(star, platforms);
     this.physics.add.collider(gobelin,platforms);
+    this.physics.add.collider(gobelin2,platforms);
+    this.physics.add.collider(gobelin3,platforms);
+    this.physics.add.collider(gobelin4,platforms);
     this.physics.add.collider(player,gobelin);
+    this.physics.add.collider(player,gobelin2);
+    this.physics.add.collider(player,gobelin3);
+    this.physics.add.collider(player,gobelin4);
    
     //  Checks to see if the player overlaps with any of the stars, if he does call the collectStar function
+
     this.physics.add.overlap(player, star, collectStar, null, this);
 
     //camera 
