@@ -21,7 +21,7 @@ var config = {
     physics: {
         default: 'arcade',
         arcade: {
-            gravity: { y: 350 },
+            gravity: { y: 300 },
             debug: true
         }
     },
@@ -111,7 +111,7 @@ function create ()
 
 
     // perso and ses settings
-    player = this.physics.add.sprite(3000, 50, 'dude');
+    player = this.physics.add.sprite(50, 50, 'dude');
     player.setCollideWorldBounds(true);
 
 
