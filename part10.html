@@ -16,7 +16,7 @@
 
 var config = {
     type: Phaser.AUTO,
-    width: 896,
+    width: 4000,
     height: 448,
     physics: {
         default: 'arcade',
@@ -42,6 +42,7 @@ var score = 0;
 var gameOver = false;
 var scoreText;
 var gobelin;
+var cam;
 
 var game = new Phaser.Game(config);
 
@@ -84,7 +85,7 @@ function create ()
     //  animation du personnage a aller a droite ou a gauche. 
     this.anims.create({
         key: 'left',
-        frames: this.anims.generateFrameNumbers('dude', { start: 0, end: 3 }),
+        frames: this.anims.generateFrameNumbers('dude', { start: 0, end: 4 }),
         frameRate: 10,
         repeat: -1
     });
@@ -121,11 +122,13 @@ function create ()
     this.physics.add.collider(star, platforms);
     this.physics.add.collider(gobelin,platforms);
     this.physics.add.collider(player,gobelin);
-
    
     //  Checks to see if the player overlaps with any of the stars, if he does call the collectStar function
     this.physics.add.overlap(player, star, collectStar, null, this);
 
+    //camera 
+        
+    
 }
  
 // commande de clavier
