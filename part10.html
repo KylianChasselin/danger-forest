@@ -120,7 +120,7 @@ function create ()
 
     // perso and ses settings
 
-    player = this.physics.add.sprite(2000, 50, 'dude');
+    player = this.physics.add.sprite(50, 50, 'dude');
     player.setCollideWorldBounds(true);
 
 
@@ -175,8 +175,8 @@ function create ()
 
     star = this.physics.add.group({
         key: 'star',
-        repeat: 1,
-        setXY: { x: 120, y: 0, stepX: 30 }
+        repeat: 2,
+        setXY: { x: 120, y: 0, stepX: 15 }
     });
 
     //  The score
@@ -258,15 +258,13 @@ function update ()
 //................F..I..N.....T..E..S..T................................
 
 
-function collectStar (player, star, score)
+function collectStar (player, star, scoretext)
 {
     star.disableBody(true, true);
 
     //  ajout des fleches
     score += 1;
     scoreText.setText('fleches: ' + score);
-
-        var x = (player.x < 400) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
 
     }
 
