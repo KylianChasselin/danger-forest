@@ -73,6 +73,7 @@ function create ()
     platforms.create(2000, 415, 'ground').setScale(2).refreshBody();
     platforms.create(2800, 415, 'ground').setScale(2).refreshBody();
     platforms.create(3600, 415, 'ground').setScale(2).refreshBody();
+    platforms.create(1500, 360, 'ground').setScale(2).refreshBody();
 
     //  PLATEFORME ET EMPLACEMENT
 
@@ -85,12 +86,18 @@ function create ()
     platforms.create(475, 150, 'ground2').setScale(0.8).refreshBody();
 
     // Deuxieme partie
-    platforms.create()
+    platforms.create(1150,363,'groundVER');
+    platforms.create(1360,-120,'groundVER');
+    platforms.create(1600,275,'groundcarre').setScale(1.5).refreshBody();
+    platforms.create(2045,160,'ground').setScale(0.8).refreshBody();
+    platforms.create(1900,363,'groundVER');
 
+    // Troisieme partie
+    platforms.create(2500,200,'groundcarre');
 
 
     // perso and ses settings
-    player = this.physics.add.sprite(50, 50, 'dude');
+    player = this.physics.add.sprite(2200, 50, 'dude');
     player.setCollideWorldBounds(true);
 
 
