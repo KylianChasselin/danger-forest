@@ -21,7 +21,7 @@ var config = {
     physics: {
         default: 'arcade',
         arcade: {
-            gravity: { y: 300 },
+            gravity: { y: 350 },
             debug: true
         }
     },
@@ -36,6 +36,7 @@ var config = {
 
 var player;
 var star;
+var star2;
 var platforms;
 var cursors;
 var score = 0;
@@ -180,6 +181,12 @@ function create ()
         setXY: { x: 120, y: 0, stepX: 15 }
     });
 
+    star2 = this.physics.add.group({
+        key: 'star',
+        repeat: 2,
+        setXY: { x: 1200, y: 0, stepX: 15 }
+    });
+
     //  The score
 
     scoreText = this.add.text(16, 16, 'fleches: 0', { fontSize: '25px', fill: '#999' });
@@ -188,6 +195,7 @@ function create ()
 
     this.physics.add.collider(player, platforms);
     this.physics.add.collider(star, platforms);
+    this.physics.add.collider(star2, platforms); 
     this.physics.add.collider(gobelin,platforms);
     this.physics.add.collider(gobelin2,platforms);
     this.physics.add.collider(gobelin3,platforms);
@@ -254,24 +262,6 @@ function update ()
     }
 
 }
-
-
-//..................T..E..S..T.....................................
-/*ennemy = function(index,game,x,y) {
-
-    this.gobelin = game.add.sprite(x,y,'gobelin');
-    this.gobelin.anchor.setTo(300,);
-    this.gobelin.name = index.toString();
-    game.physics.enable(this.gobelin,Phaser.Physics.ARCADE);
-    this.gobelin.body.immovable = true;
-    this.gobelin.body.setCollideWorldBounds = true;
-
-    
-}
-    gobelin = new gobelin(0,game,player.x+400,player.y-200);*/
-
-//................F..I..N.....T..E..S..T................................
-
 
 function collectStar (player, star, scoretext)
 {
