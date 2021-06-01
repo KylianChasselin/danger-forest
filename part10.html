@@ -45,6 +45,7 @@ var gobelin;
 var gobelin2;
 var gobelin3;
 var gobelin4;
+var hitgobelin
 var camera;
 
 var game = new Phaser.Game(config);
@@ -191,10 +192,10 @@ function create ()
     this.physics.add.collider(gobelin2,platforms);
     this.physics.add.collider(gobelin3,platforms);
     this.physics.add.collider(gobelin4,platforms);
-    this.physics.add.collider(player,gobelin);
-    this.physics.add.collider(player,gobelin2);
-    this.physics.add.collider(player,gobelin3);
-    this.physics.add.collider(player,gobelin4);
+    this.physics.add.collider(player,gobelin,hitgobelin);
+    this.physics.add.collider(player,gobelin2,hitgobelin);
+    this.physics.add.collider(player,gobelin3,hitgobelin);
+    this.physics.add.collider(player,gobelin4,hitgobelin);
    
     //  Checks to see if the player overlaps with any of the stars, if he does call the collectStar function
 
@@ -205,6 +206,20 @@ function create ()
     this.cameras.main.setBounds(0, 0, 4000, 448)
     this.cameras.main.setSize(896, 800);
     this.cameras.main.startFollow(player);
+
+    // game over 
+
+    gobelin = this.physics.add.group();
+
+    this.physics.add.collider(gobelin, platforms);
+    this.physics.add.collider(player, gobelin, hitgobelin, null, this);
+
+    function hitgobelin (player, gobelin, gobelin2, gobelin3, gobelin4){
+        this.physics.pause();
+        player.setTint(0xff0000);
+        player.anims.play('turn');
+        this.gameOver = true;
+    }
 }
  
 // commande de clavier
