@@ -48,6 +48,8 @@ var gobelin3;
 var gobelin4;
 var hitgobelin
 var camera;
+var boutonFeu;
+var direction;
 
 var game = new Phaser.Game(config);
 
@@ -124,6 +126,7 @@ function create ()
 
     player = this.physics.add.sprite(50, 50, 'dude');
     player.setCollideWorldBounds(true);
+    var direction = 'right';
 
 
     //gobelin
@@ -171,6 +174,10 @@ function create ()
      //  Input Events
 
     cursors = this.input.keyboard.createCursorKeys();
+
+    // bouton Feu 
+
+    boutonFeu = this.input.keyboard.addKey('space');
 
     
     //  Some stars to collect, 12 in total, evenly spaced 70 pixels apart along the x axis
@@ -230,6 +237,10 @@ function create ()
     }
 }
  
+function tirer(player) {
+	alert ("joueur en position"+player.x + ","+player.y + " ; direction du tir : "+ player.direction) ; 
+}
+
 // commande de clavier
 
 function update ()
@@ -240,12 +251,15 @@ function update ()
     }
 
     if (cursors.left.isDown)
-    {
+    {   
+        player.direction = 'left';
         player.setVelocityX(-160);
         player.anims.play('left', true);
     }
+
     else if (cursors.right.isDown)
     {
+        player.direction = 'right';
         player.setVelocityX(160);
         player.anims.play('right', true);
     }
@@ -260,6 +274,12 @@ function update ()
     {
         player.setVelocityY(-330);
     }
+
+
+    if ( Phaser.Input.Keyboard.JustDown(boutonFeu)) {
+    tirer(player, direction);
+    }
+
 
 }
 
