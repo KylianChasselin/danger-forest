@@ -50,6 +50,7 @@ var hitgobelin
 var camera;
 var boutonFeu;
 var direction;
+var groupeBullets;
 
 var game = new Phaser.Game(config);
 
@@ -61,6 +62,7 @@ function preload ()
     this.load.image('groundVER', 'assets/platformVer.png');
     this.load.image('groundcarre', 'assets/platformcarre.png');
     this.load.image('star', 'assets/flecheverticale.png');
+    this.load.image('bullet', 'assets/fleche.png');
     this.load.image('bomb', 'assets/bomb.png');
     this.load.spritesheet('dude', 'assets/dude.png', { frameWidth: 32, frameHeight: 48 });
     this.load.spritesheet('gobelin', 'assets/gobelin.png', { frameWidth: 32, frameHeight: 48 });
@@ -69,6 +71,7 @@ function preload ()
 function create ()
 {
     //  background
+
     this.add.image(2000, 224, 'sky');
 
     //  The platforms group contains the ground and the 2 ledges we can jump on
@@ -196,7 +199,7 @@ function create ()
 
     //  The score
 
-    scoreText = this.add.text(16, 16, 'fleches: 0', { fontSize: '25px', fill: '#999' });
+    scoreText = this.add.text(16, 16, 'fleches: 0', { fontSize: '25px', fill: '#999' })
 
     //  tout les Collider
 
@@ -236,11 +239,18 @@ function create ()
         this.gameOver = true;
     }
 }
- 
+ //.....................T..E..S..T......TIR.......................................
 function tirer(player) {
-	alert ("joueur en position"+player.x + ","+player.y + " ; direction du tir : "+ player.direction) ; 
+   /* var coefDir;
+	    if (player.direction == 'left') { coefDir = -1; } else { coefDir = 1 }
+        // on crée la balle a coté du joueur
+        groupeBullets = create(player.x + (25 * coefDir), player.y - 4, 'bullet');
+        // parametres physiques de la balle.
+        bullet.setCollideWorldBounds(true);
+        bullet.body.allowGravity =false;
+        bullet.setVelocity(1000 * coefDir, 0); // vitesse en x et en y */
 }
-
+// .........................................................................
 // commande de clavier
 
 function update ()
