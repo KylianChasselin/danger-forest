@@ -50,6 +50,7 @@ var hitgobelin
 var camera;
 var boutonFeu;
 var direction;
+var bullet;
 var groupeBullets;
 
 var game = new Phaser.Game(config);
@@ -239,18 +240,24 @@ function create ()
         this.gameOver = true;
     }
 }
+
  //.....................T..E..S..T......TIR.......................................
 function tirer(player) {
-   /* var coefDir;
+    
+    alert ("joueur en position"+player.x + ","+player.y + " ; direction du tir : "+ player.direction) ;
+    
+    /*var coefDir;
 	    if (player.direction == 'left') { coefDir = -1; } else { coefDir = 1 }
         // on crée la balle a coté du joueur
-        groupeBullets = create(player.x + (25 * coefDir), player.y - 4, 'bullet');
+        bullet = groupeBullets.create(player.x + (25 * coefDir), player.y - 4, 'bullet');
         // parametres physiques de la balle.
         bullet.setCollideWorldBounds(true);
         bullet.body.allowGravity =false;
         bullet.setVelocity(1000 * coefDir, 0); // vitesse en x et en y */
 }
 // .........................................................................
+
+
 // commande de clavier
 
 function update ()
@@ -289,7 +296,6 @@ function update ()
     if ( Phaser.Input.Keyboard.JustDown(boutonFeu)) {
     tirer(player, direction);
     }
-
 
 }
 
