@@ -72,7 +72,7 @@ function preload ()
     this.load.image('star', 'assets/flecheverticale.png');
     this.load.image('beam', 'assets/fleche.png');
     this.load.image('bomb', 'assets/bomb.png');
-    this.load.spritesheet('dude', 'assets/dude.png', { frameWidth: 120, frameHeight: 48 });
+    this.load.spritesheet('dude', 'assets/Ximenia.png', { frameWidth: 166, frameHeight: 80 });
     this.load.spritesheet('gobelin', 'assets/gobelin.png', { frameWidth: 32, frameHeight: 48 });
 }
 
@@ -139,6 +139,7 @@ function create ()
     player = this.physics.add.sprite(50, 50, 'dude');
     player.setCollideWorldBounds(true);
     var direction = 'right';
+    player.body.setSize(166,60);
 
 
     //gobelin
@@ -236,6 +237,9 @@ function create ()
 
     this.physics.add.overlap(player, star, collectStar, null, this);
 
+
+    this.physics.add.overlap(groupeBullets, gobelin, hit, null,this);
+
     //camera 
 
     this.cameras.main.setBounds(0, 0, 4000, 448)
@@ -329,9 +333,11 @@ function collectStar (player, star, scoretext)
 
     }
 
-    //function shootBeam(){
-        //var beam = new Beam(this);
-   // }
+    function hit (bullet, gobelin) {
+    bullet.destroy();
+    gobelin.destroy();    
+}
+
 
 </script>
 </body>
