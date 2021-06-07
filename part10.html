@@ -173,7 +173,7 @@ function create ()
 
     this.anims.create({
         key: 'turn',
-        frames: [ { key: 'dude', frame: 1 } ],
+        frames: [ { key: 'dude', frame: 18 } ],
         frameRate: 20
     });
 
@@ -239,6 +239,9 @@ function create ()
 
 
     this.physics.add.overlap(groupeBullets, gobelin, hit, null,this);
+    this.physics.add.overlap(groupeBullets, gobelin2, hit, null,this);
+    this.physics.add.overlap(groupeBullets, gobelin3, hit, null,this);
+    this.physics.add.overlap(groupeBullets, gobelin4, hit, null,this);
 
     //camera 
 
@@ -261,7 +264,8 @@ function create ()
     }
 }
 
- //.....................T..E..S..T......TIR.......................................
+// fonction permettant de faire apparaitre la fleche ainsi que sa vitesse 
+
 function tirer(player) {
     
     
@@ -274,7 +278,6 @@ function tirer(player) {
         bullet.body.allowGravity =false;
         bullet.setVelocity(1000 * coefDir, 0); // vitesse en x et en y 
 }
-// .........................................................................
 
 
 // commande de clavier
@@ -333,10 +336,25 @@ function collectStar (player, star, scoretext)
 
     }
 
-    function hit (bullet, gobelin) {
+function hit (bullet, gobelin) {
     bullet.destroy();
-    gobelin.destroy();    
-}
+    gobelin.destroy();
+    }
+
+function hit2 (bullet, gobelin2) {
+    bullet.destroy();
+    gobelin2.destroy();
+    }
+
+function hit3 (bullet, gobelin3) {
+    bullet.destroy();
+    gobelin3.destroy();
+    }
+
+function hit4 (bullet, gobelin4) {
+    bullet.destroy();
+    gobelin4.destroy();
+    }
 
 
 </script>
