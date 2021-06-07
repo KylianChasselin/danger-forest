@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <title>Making your first Phaser 3 Game - Part 10</title>
     <script src="//cdn.jsdelivr.net/npm/phaser@3.11.0/dist/phaser.js"></script>
+    
     <style type="text/css">
         body {
             margin: 0;
@@ -17,6 +18,8 @@
 //...............................................
 //import TitleScene from './danger-forest/titleScreen'
 //...................................................
+
+
 var config = {
     type: Phaser.AUTO,
     width: 4000,
@@ -54,7 +57,6 @@ var camera;
 var boutonFeu;
 var direction;
 var bullet;
-var groupeBullets;
 
 var game = new Phaser.Game(config);
 
@@ -68,7 +70,7 @@ function preload ()
     this.load.image('groundVER', 'assets/platformVer.png');
     this.load.image('groundcarre', 'assets/platformcarre.png');
     this.load.image('star', 'assets/flecheverticale.png');
-    this.load.image('bullet', 'assets/fleche.png');
+    this.load.image('beam', 'assets/fleche.png');
     this.load.image('bomb', 'assets/bomb.png');
     this.load.spritesheet('dude', 'assets/dude.png', { frameWidth: 120, frameHeight: 48 });
     this.load.spritesheet('gobelin', 'assets/gobelin.png', { frameWidth: 32, frameHeight: 48 });
@@ -183,12 +185,19 @@ function create ()
 
      //  Input Events
 
-    cursors = this.input.keyboard.createCursorKeys();
+     cursors = this.input.keyboard.addKeys({ 'up': Phaser.Input.Keyboard.KeyCodes.UP,
+            'down': Phaser.Input.Keyboard.KeyCodes.DOWN, 
+            'left': Phaser.Input.Keyboard.KeyCodes.LEFT,
+            'right': Phaser.Input.Keyboard.KeyCodes.RIGHT,
+            'space' : Phaser.Input.Keyboard.KeyCodes.SPACE,
+            'buttonX' : Phaser.Input.Keyboard.KeyCodes.X,
+        });
 
     // bouton Feu 
 
     boutonFeu = this.input.keyboard.addKey('space');
 
+    groupeBullets= this.physics.add.group();
     
     //  Some stars to collect, 12 in total, evenly spaced 70 pixels apart along the x axis
 
@@ -221,6 +230,7 @@ function create ()
     this.physics.add.collider(player,gobelin2,hitgobelin);
     this.physics.add.collider(player,gobelin3,hitgobelin);
     this.physics.add.collider(player,gobelin4,hitgobelin);
+    this.physics.add.collider(groupeBullets,platforms);
    
     //  Checks to see if the player overlaps with any of the stars, if he does call the collectStar function
 
@@ -250,16 +260,15 @@ function create ()
  //.....................T..E..S..T......TIR.......................................
 function tirer(player) {
     
-    alert ("joueur en position"+player.x + ","+player.y + " ; direction du tir : "+ player.direction) ;
     
-    /*var coefDir;
+    
+    var coefDir;
 	    if (player.direction == 'left') { coefDir = -1; } else { coefDir = 1 }
         // on crée la balle a coté du joueur
-        bullet = groupeBullets.create(player.x + (25 * coefDir), player.y - 4, 'bullet');
+        var bullet = groupeBullets.create(player.x + (25 * coefDir), player.y - 4, 'beam');
         // parametres physiques de la balle.
-        bullet.setCollideWorldBounds(true);
         bullet.body.allowGravity =false;
-        bullet.setVelocity(1000 * coefDir, 0); // vitesse en x et en y */
+        bullet.setVelocity(1000 * coefDir, 0); // vitesse en x et en y 
 }
 // .........................................................................
 
@@ -303,6 +312,11 @@ function update ()
     tirer(player, direction);
     }
 
+    if (cursors.buttonX.isDown)
+    {
+        //shootBeam();
+    }
+
 }
 
 function collectStar (player, star, scoretext)
@@ -314,6 +328,10 @@ function collectStar (player, star, scoretext)
     scoreText.setText('fleches: ' + score);
 
     }
+
+    //function shootBeam(){
+        //var beam = new Beam(this);
+   // }
 
 </script>
 </body>
