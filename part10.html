@@ -41,8 +41,8 @@ var config = {
 // les variables presentes dans le code
 
 var player;
-var star;
-var star2;
+var fleche;
+var fleche2;
 var platforms;
 var cursors;
 var score = 0;
@@ -69,7 +69,7 @@ function preload ()
     this.load.image('ground2', 'assets/platform2.png');
     this.load.image('groundVER', 'assets/platformVer.png');
     this.load.image('groundcarre', 'assets/platformcarre.png');
-    this.load.image('star', 'assets/flecheverticale.png');
+    this.load.image('fleche', 'assets/flecheverticale.png');
     this.load.image('beam', 'assets/fleche.png');
     this.load.image('bomb', 'assets/bomb.png');
     this.load.spritesheet('dude', 'assets/Ximenia.png', { frameWidth: 166, frameHeight: 80 });
@@ -200,16 +200,16 @@ function create ()
 
     groupeBullets= this.physics.add.group();
     
-    //  Some stars to collect, 12 in total, evenly spaced 70 pixels apart along the x axis
+    //  Some fleches to collect, 12 in total, evenly spaced 70 pixels apart along the x axis
 
-    star = this.physics.add.group({
-        key: 'star',
+    fleche = this.physics.add.group({
+        key: 'fleche',
         repeat: 2,
         setXY: { x: 120, y: 0, stepX: 15 }
     });
 
-    star2 = this.physics.add.group({
-        key: 'star',
+    fleche2 = this.physics.add.group({
+        key: 'fleche',
         repeat: 2,
         setXY: { x: 1200, y: 0, stepX: 15 }
     });
@@ -221,8 +221,8 @@ function create ()
     //  tout les Collider
 
     this.physics.add.collider(player, platforms);
-    this.physics.add.collider(star, platforms);
-    this.physics.add.collider(star2, platforms); 
+    this.physics.add.collider(fleche, platforms);
+    this.physics.add.collider(fleche2, platforms); 
     this.physics.add.collider(gobelin,platforms);
     this.physics.add.collider(gobelin2,platforms);
     this.physics.add.collider(gobelin3,platforms);
@@ -233,9 +233,9 @@ function create ()
     this.physics.add.collider(player,gobelin4,hitgobelin);
     this.physics.add.collider(groupeBullets,platforms);
    
-    //  Checks to see if the player overlaps with any of the stars, if he does call the collectStar function
+    //  Checks to see if the player overlaps with any of the fleche, if he does call the collectSfleche function
 
-    this.physics.add.overlap(player, star, collectStar, null, this);
+    this.physics.add.overlap(player, fleche, collectfleche, null, this);
 
 
     this.physics.add.overlap(groupeBullets, gobelin, hit, null,this);
@@ -326,15 +326,28 @@ function update ()
 
 }
 
-function collectStar (player, star, scoretext)
+function collectfleche (player, fleche, scoretext)
 {
-    star.disableBody(true, true);
+    fleche.disableBody(true, true);
 
     //  ajout des fleches
     score += 1;
     scoreText.setText('fleches: ' + score);
 
     }
+
+function collectfleche2 (player, fleche2, scoretext)
+{
+    fleche2.disableBody(true, true);
+
+    //  ajout des fleches
+    score += 1;
+    scoreText.setText('fleches: ' + score);
+
+    }
+
+
+    // fonctions permettant de disparaitre les ennemies toucher et les fleches tuant l'ennemie en question
 
 function hit (bullet, gobelin) {
     bullet.destroy();
