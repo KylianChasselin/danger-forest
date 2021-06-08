@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <title>Making your first Phaser 3 Game - Part 10</title>
     <script src="//cdn.jsdelivr.net/npm/phaser@3.11.0/dist/phaser.js"></script>
-    
+    <script type="text/javascript" src= "scene/test.js"></script>
     <style type="text/css">
         body {
             margin: 0;
@@ -16,9 +16,12 @@
 <script type="text/javascript">
 
 //...............................................
-//import TitleScene from './danger-forest/titleScreen'
-//...................................................
 
+//import TitleScene from './scene/titleScreen'
+
+//let titleScreen = new titleScreen();
+
+//...................................................
 
 var config = {
     type: Phaser.AUTO,
@@ -36,6 +39,9 @@ var config = {
         create: create,
         update: update
     }
+
+    /*game.scene.add('titleScreen', titleScreen);
+    game.scene.start('titleScreen');*/
 };
 
 // les variables presentes dans le code
@@ -71,7 +77,6 @@ function preload ()
     this.load.image('groundcarre', 'assets/platformcarre.png');
     this.load.image('fleche', 'assets/flecheverticale.png');
     this.load.image('beam', 'assets/fleche.png');
-    this.load.image('bomb', 'assets/bomb.png');
     this.load.spritesheet('dude', 'assets/Ximenia.png', { frameWidth: 166, frameHeight: 80 });
     this.load.spritesheet('gobelin', 'assets/gobelin.png', { frameWidth: 32, frameHeight: 48 });
 }
