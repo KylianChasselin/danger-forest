@@ -58,11 +58,13 @@ var gobelin;
 var gobelin2;
 var gobelin3;
 var gobelin4;
+var gobelin5;
 var hitgobelin
 var camera;
 var boutonFeu;
 var direction;
 var bullet;
+
 
 var game = new Phaser.Game(config);
 
@@ -77,6 +79,7 @@ function preload ()
     this.load.image('groundcarre', 'assets/platformcarre.png');
     this.load.image('fleche', 'assets/flecheverticale.png');
     this.load.image('beam', 'assets/fleche.png');
+   
     this.load.spritesheet('dude', 'assets/Ximenia.png', { frameWidth: 166, frameHeight: 80 });
     this.load.spritesheet('gobelin', 'assets/gobelin.png', { frameWidth: 32, frameHeight: 48 });
 }
@@ -98,7 +101,7 @@ function create ()
     platforms.create(2000, 415, 'ground').setScale(2).refreshBody();
     platforms.create(2800, 415, 'ground').setScale(2).refreshBody();
     platforms.create(3600, 415, 'ground').setScale(2).refreshBody();
-    platforms.create(1500, 360, 'ground').setScale(2).refreshBody();
+    
 
     //  PLATEFORME ET EMPLACEMENT
 
@@ -113,9 +116,9 @@ function create ()
 
     // Deuxieme partie
 
-    platforms.create(1150,363,'groundVER');
+    
     platforms.create(1360,-120,'groundVER');
-    platforms.create(1600,275,'groundcarre').setScale(1.5).refreshBody();
+    platforms.create(1650,325,'groundcarre').setScale(1.5).refreshBody();
     platforms.create(2045,160,'ground').setScale(0.8).refreshBody();
     platforms.create(1900,363,'groundVER');
 
@@ -141,11 +144,10 @@ function create ()
 
     // perso and ses settings
 
-    player = this.physics.add.sprite(50, 50, 'dude');
+    player = this.physics.add.sprite(1500, 50, 'dude');
     player.setCollideWorldBounds(true);
     var direction = 'right';
-    player.body.setSize(80,70,);
-    player.body.setOffset (70, 0);
+    player.body.setSize(80,60);
 
 
     //gobelin
@@ -155,8 +157,9 @@ function create ()
     
     //gobelin 2
 
-    gobelin2 = this.physics.add.sprite(1800, 250, 'gobelin');
+    gobelin2 = this.physics.add.sprite(1800, 200, 'gobelin');
     gobelin2.setCollideWorldBounds(true);
+    gobelin2.body.setSize(50,300);
 
     //gobelin 3 
 
@@ -167,6 +170,14 @@ function create ()
 
     gobelin4 = this.physics.add.sprite(2500, 200, 'gobelin');
     gobelin4.setCollideWorldBounds(true);
+
+
+     // gobelin 5
+
+     gobelin5 = this.physics.add.sprite(1100, 200, 'gobelin');
+    gobelin5.setCollideWorldBounds(true);
+    gobelin5.body.setSize(100,100);
+
 
     //  animation du personnage a aller a droite ou a gauche. 
 
@@ -222,7 +233,7 @@ function create ()
 
     //  The score
 
-    scoreText = this.add.text(16, 16, 'fleches: 0', { fontSize: '25px', fill: '#999' })
+    scoreText = this.add.text(16, 16, 'fleches: 0', { fontSize: '25px', fill: '#999' });
 
     //  tout les Collider
 
@@ -233,10 +244,12 @@ function create ()
     this.physics.add.collider(gobelin2,platforms);
     this.physics.add.collider(gobelin3,platforms);
     this.physics.add.collider(gobelin4,platforms);
+    this.physics.add.collider(gobelin5,platforms);
     this.physics.add.collider(player,gobelin,hitgobelin);
     this.physics.add.collider(player,gobelin2,hitgobelin);
     this.physics.add.collider(player,gobelin3,hitgobelin);
     this.physics.add.collider(player,gobelin4,hitgobelin);
+    this.physics.add.collider(player,gobelin5,hitgobelin);
     this.physics.add.collider(groupeBullets,platforms);
    
     //  Checks to see if the player overlaps with any of the fleche, if he does call the collectSfleche function
@@ -248,10 +261,11 @@ function create ()
     this.physics.add.overlap(groupeBullets, gobelin2, hit, null,this);
     this.physics.add.overlap(groupeBullets, gobelin3, hit, null,this);
     this.physics.add.overlap(groupeBullets, gobelin4, hit, null,this);
+    this.physics.add.overlap(groupeBullets, gobelin5, hit, null,this);
 
     //camera 
 
-    this.cameras.main.setBounds(0, 0, 4000, 448)
+    this.cameras.main.setBounds(0, 0, 4000, 448);
     this.cameras.main.setSize(896, 448);
     this.cameras.main.startFollow(player);
 
@@ -279,7 +293,7 @@ function tirer(player) {
     var coefDir;
 	    if (player.direction == 'left') { coefDir = -1; } else { coefDir = 1 }
         // on crée la balle a coté du joueur
-        var bullet = groupeBullets.create(player.x + (25 * coefDir), player.y - 4, 'beam');
+        var bullet = groupeBullets.create(player.x + (25 * coefDir), player.y - 10, 'beam');
         // parametres physiques de la balle.
         bullet.body.allowGravity =false;
         bullet.setVelocity(1000 * coefDir, 0); // vitesse en x et en y 

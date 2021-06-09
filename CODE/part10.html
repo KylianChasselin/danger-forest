@@ -63,6 +63,7 @@ var camera;
 var boutonFeu;
 var direction;
 var bullet;
+var porte;
 
 var game = new Phaser.Game(config);
 
@@ -77,6 +78,7 @@ function preload ()
     this.load.image('groundcarre', 'assets/platformcarre.png');
     this.load.image('fleche', 'assets/flecheverticale.png');
     this.load.image('beam', 'assets/fleche.png');
+    this.load.image('porte', 'assets/porte_sortie.png');
     this.load.spritesheet('dude', 'assets/Ximenia.png', { frameWidth: 166, frameHeight: 80 });
     this.load.spritesheet('gobelin', 'assets/gobelin.png', { frameWidth: 32, frameHeight: 48 });
 }
@@ -138,10 +140,11 @@ function create ()
     platforms.create(3550,330,'ground').setScale(0.6).refreshBody();
     platforms.create(4000,300,'ground');
 
+    porte.create(3000,300,'porte');
 
     // perso and ses settings
 
-    player = this.physics.add.sprite(50, 50, 'dude');
+    player = this.physics.add.sprite(3000, 3000, 'dude');
     player.setCollideWorldBounds(true);
     var direction = 'right';
     player.body.setSize(166,60);
