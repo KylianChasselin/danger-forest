@@ -55,7 +55,7 @@ var score = 0;
 var gameOver = false;
 var scoreText;
 var gobelin;
-var gobelin2;
+var planteCarnivore;
 var gobelin3;
 var gobelin4;
 var gobelin5;
@@ -64,6 +64,8 @@ var camera;
 var boutonFeu;
 var direction;
 var bullet;
+var lance;
+var porte;
 
 
 var game = new Phaser.Game(config);
@@ -79,7 +81,9 @@ function preload ()
     this.load.image('groundcarre', 'assets/platformcarre.png');
     this.load.image('fleche', 'assets/flecheverticale.png');
     this.load.image('beam', 'assets/fleche.png');
-   
+    this.load.image('lance','assets/lance.png');
+    this.load.image('porte','assets/porte.png');
+    this.load.image('planteCarnivore', 'assets/plante_carnivore.png');
     this.load.spritesheet('dude', 'assets/Ximenia.png', { frameWidth: 166, frameHeight: 80 });
     this.load.spritesheet('gobelin', 'assets/gobelin.png', { frameWidth: 32, frameHeight: 48 });
 }
@@ -92,6 +96,8 @@ function create ()
 
     //  The platforms group contains the ground and the 2 ledges we can jump on
     platforms = this.physics.add.staticGroup();
+    lance = this.physics.add.staticGroup();
+    porte = this.physics.add.staticGroup();
     
 
     // sol de base doubler de volume 
@@ -122,6 +128,8 @@ function create ()
     platforms.create(2045,160,'ground').setScale(0.8).refreshBody();
     platforms.create(1900,363,'groundVER');
 
+    lance.create(950,375, 'lance');
+
     // Troisieme partie
 
     platforms.create(2189,363,'groundVER');
@@ -141,10 +149,11 @@ function create ()
     platforms.create(3550,330,'ground').setScale(0.6).refreshBody();
     platforms.create(4000,300,'ground');
 
+    porte.create(3950,220, 'porte');
 
     // perso and ses settings
 
-    player = this.physics.add.sprite(1500, 50, 'dude');
+    player = this.physics.add.sprite(50, 50, 'dude');
     player.setCollideWorldBounds(true);
     var direction = 'right';
     player.body.setSize(80,60);
@@ -157,9 +166,9 @@ function create ()
     
     //gobelin 2
 
-    gobelin2 = this.physics.add.sprite(1800, 200, 'gobelin');
-    gobelin2.setCollideWorldBounds(true);
-    gobelin2.body.setSize(50,300);
+    planteCarnivore = this.physics.add.sprite(1800, 200, 'planteCarnivore');
+    planteCarnivore.setCollideWorldBounds(true);
+    planteCarnivore.body.setSize(50,300);
 
     //gobelin 3 
 
@@ -241,12 +250,12 @@ function create ()
     this.physics.add.collider(fleche, platforms);
     this.physics.add.collider(fleche2, platforms); 
     this.physics.add.collider(gobelin,platforms);
-    this.physics.add.collider(gobelin2,platforms);
+    this.physics.add.collider(planteCarnivore,platforms);
     this.physics.add.collider(gobelin3,platforms);
     this.physics.add.collider(gobelin4,platforms);
     this.physics.add.collider(gobelin5,platforms);
     this.physics.add.collider(player,gobelin,hitgobelin);
-    this.physics.add.collider(player,gobelin2,hitgobelin);
+    this.physics.add.collider(player,planteCarnivore,hitgobelin);
     this.physics.add.collider(player,gobelin3,hitgobelin);
     this.physics.add.collider(player,gobelin4,hitgobelin);
     this.physics.add.collider(player,gobelin5,hitgobelin);
@@ -258,7 +267,7 @@ function create ()
 
 
     this.physics.add.overlap(groupeBullets, gobelin, hit, null,this);
-    this.physics.add.overlap(groupeBullets, gobelin2, hit, null,this);
+    this.physics.add.overlap(groupeBullets, planteCarnivore, hit, null,this);
     this.physics.add.overlap(groupeBullets, gobelin3, hit, null,this);
     this.physics.add.overlap(groupeBullets, gobelin4, hit, null,this);
     this.physics.add.overlap(groupeBullets, gobelin5, hit, null,this);
