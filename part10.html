@@ -173,12 +173,17 @@ function create ()
     gobelin4 = this.physics.add.sprite(2500, 200, 'gobelin');
     gobelin4.setCollideWorldBounds(true);
 
-
      // gobelin 5
 
     gobelin5 = this.physics.add.sprite(1100, 200, 'gobelin');
     gobelin5.setCollideWorldBounds(true);
     gobelin5.body.setSize(100,100);
+
+    /*gobelin5.children.iterate(function (gobelin5) {
+    gobelin5.pointsVie=Phaser.Math.Between(3, 3);;
+    gobelin5.y = Phaser.Math.Between(10,250);
+    gobelin5.setBounce(1);
+    });*/
 
 
     //  animation du personnage a aller a droite ou a gauche. 
