@@ -23,7 +23,8 @@
 
 //...................................................
 
-var config = {
+
+    var config = {
     type: Phaser.AUTO,
     width: 4000,
     height: 448,
@@ -34,15 +35,12 @@ var config = {
             debug: true
         }
     },
-    scene: {
+    scene:{
         preload: preload,
         create: create,
         update: update
     }
-
-    /*game.scene.add('titleScreen', titleScreen);
-    game.scene.start('titleScreen');*/
-};
+}
 
 // les variables presentes dans le code
 
@@ -66,7 +64,6 @@ var direction;
 var bullet;
 var lance;
 var porte;
-
 
 var game = new Phaser.Game(config);
 
@@ -183,7 +180,7 @@ function create ()
 
      // gobelin 5
 
-     gobelin5 = this.physics.add.sprite(1100, 200, 'gobelin');
+    gobelin5 = this.physics.add.sprite(1100, 200, 'gobelin');
     gobelin5.setCollideWorldBounds(true);
     gobelin5.body.setSize(100,100);
 
@@ -285,7 +282,7 @@ function create ()
     this.physics.add.collider(gobelin, platforms);
     this.physics.add.collider(player, gobelin, hitgobelin, null, this);
 
-    function hitgobelin (player, gobelin, gobelin2, gobelin3, gobelin4){
+function hitgobelin (player, gobelin, gobelin2, gobelin3, gobelin4){
         this.physics.pause();
         player.setTint(0xff0000);
         player.anims.play('turn');
@@ -295,9 +292,7 @@ function create ()
 
 // fonction permettant de faire apparaitre la fleche ainsi que sa vitesse 
 
-function tirer(player) {
-    
-    
+function tirer(player) {    
     
     var coefDir;
 	    if (player.direction == 'left') { coefDir = -1; } else { coefDir = 1 }
