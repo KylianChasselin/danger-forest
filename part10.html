@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <title>Making your first Phaser 3 Game - Part 10</title>
     <script src="//cdn.jsdelivr.net/npm/phaser@3.11.0/dist/phaser.js"></script>
+    
     <script type="text/javascript" src= "scene/test.js"></script>
     <style type="text/css">
         body {
@@ -17,7 +18,7 @@
 
 //...............................................
 
-//import TitleScene from './scene/titleScreen'
+//import TitleScene from './scene/titleScreen';
 
 //let titleScreen = new titleScreen();
 
@@ -32,7 +33,7 @@
         default: 'arcade',
         arcade: {
             gravity: { y: 350 },
-            debug: true
+            debug: false
         }
     },
     scene:{
@@ -50,6 +51,7 @@ var fleche2;
 var platforms;
 var cursors;
 var score = 0;
+var text;
 var gameOver = false;
 var scoreText;
 var gobelin;
@@ -241,6 +243,24 @@ function create ()
     //  The score
 
     scoreText = this.add.text(16, 16, 'fleches: 0', { fontSize: '25px', fill: '#999' });
+
+    // Texte 
+
+        // --- commandes
+
+    text = this.add.text(100,220, 'commandes:', {fontSize: '25px',fontcolor: '#000', fill: '#999'});
+    text = this.add.text(50,245, 'gauche <     > droite', {fontSize: '20px', fill: '#999'});
+    text = this.add.text(30,265, 'espace pour tirer des fleches', {fontSize: '20px', fill: '#999'});
+    text = this.add.text(700,200, '^ saut', {fontSize: '20px', fill: '#999'});
+
+        // --- texte histoire / aide 
+
+    text = this.add.text(1000,50, 'une maison de gobelin !', {fontSize: '20px', fill: '#999'});
+    text = this.add.text(2000,50, 'alors que nos héros continuait leur route', {fontSize: '20px', fill: '#999'});
+    text = this.add.text(2000,75, 'Ximenia deteste l eau', {fontSize: '20px', fill: '#999'});
+    text = this.add.text(3300,100, 'une porte etrange apparu devant nos heros', {fontSize: '20px', fill: '#000'});
+    text = this.add.text(3300,75, 'alors qu ils avancaient dans la foret', {fontSize: '20px', fill: '#000'});
+    text = this.add.text(3300,125, 'avec une serrure en forme de pointe de lance', {fontSize: '20px', fill: '#000'});
 
     //  tout les Collider
 
