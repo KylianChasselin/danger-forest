@@ -2,9 +2,8 @@
 <html lang="en"> 
 <head> 
     <meta charset="UTF-8" />
-    <title>Making your first Phaser 3 Game - Part 10</title>
+    <title>FOREST-DANGER </title>
     <script src="//cdn.jsdelivr.net/npm/phaser@3.11.0/dist/phaser.js"></script>
-    
     <script type="text/javascript" src= "scene/test.js"></script>
     <style type="text/css">
         body {
@@ -16,7 +15,9 @@
 
 <script type="text/javascript">
 
-//...............................................
+
+
+//....................................................
 
 //import TitleScene from './scene/titleScreen';
 
@@ -33,14 +34,14 @@
         default: 'arcade',
         arcade: {
             gravity: { y: 350 },
-            debug: false
+            debug: true
         }
     },
-    scene:{
-        preload: preload,
-        create: create,
-        update: update
-    }
+    scene: {
+            preload: preload,
+            create: create,
+            update: update
+        }
 }
 
 // les variables presentes dans le code
@@ -68,6 +69,14 @@ var lance;
 var porte;
 
 var game = new Phaser.Game(config);
+game.scene.start("world");
+
+
+class selectWorld extends Phaser.Scene{
+
+
+}
+
 
 function preload ()
 {
@@ -84,6 +93,7 @@ function preload ()
     this.load.image('porte','assets/porte.png');
     this.load.image('planteCarnivore', 'assets/plante_carnivore.png');
     this.load.spritesheet('dude', 'assets/Ximenia.png', { frameWidth: 166, frameHeight: 80 });
+    this.load.image('mort', 'assets/mort.png');
     this.load.spritesheet('gobelin', 'assets/gobelin.png', { frameWidth: 32, frameHeight: 48 });
 }
 
@@ -260,7 +270,7 @@ function create ()
     text = this.add.text(2000,75, 'Ximenia deteste l eau', {fontSize: '20px', fill: '#999'});
     text = this.add.text(3300,100, 'une porte etrange apparu devant nos heros', {fontSize: '20px', fill: '#000'});
     text = this.add.text(3300,75, 'alors qu ils avancaient dans la foret', {fontSize: '20px', fill: '#000'});
-    text = this.add.text(3300,125, 'avec une serrure en forme de pointe de lance', {fontSize: '20px', fill: '#000'});
+    text = this.add.text(3300,125, 'avec une serrure en forme de pointe de lance...', {fontSize: '20px', fill: '#000'});
 
     //  tout les Collider
 
@@ -303,13 +313,25 @@ function create ()
     this.physics.add.collider(gobelin, platforms);
     this.physics.add.collider(player, gobelin, hitgobelin, null, this);
 
-function hitgobelin (player, gobelin, gobelin2, gobelin3, gobelin4){
+function hitgobelin (player, gobelin, gobelin2, gobelin3, gobelin4) {
         this.physics.pause();
         player.setTint(0xff0000);
-        player.anims.play('turn');
+        player.anims.play('mort');
         this.gameOver = true;
-    }
 }
+
+}
+
+//...........................TEST.PORTE ...................................................
+
+function checkOverlap(dude, porte) {
+   var boundsA = dude.getBounds();
+   var boundsB = porte.getBounds();
+    var result = Phaser.Geom.Rectangle.Intersection(boundsA, boundsB);
+    return (result.width !=0 || result.height!=0 );
+}
+
+//............................................................................
 
 // fonction permettant de faire apparaitre la fleche ainsi que sa vitesse 
 
@@ -366,8 +388,16 @@ function update ()
 
     if (cursors.buttonX.isDown)
     {
-        //shootBeam();
+        //shootBeam
     }
+
+
+    if (Phaser.Input.Keyboard.JustDown(cursors.down)) {
+            if (checkOverlap(player, porte)) {
+              this.scene.start("finish");
+            } 
+        }
+  
 
 }
 
@@ -381,7 +411,7 @@ function collectfleche (player, fleche, scoretext)
 
     }
 
-function collectfleche2 (player, fleche2, scoretext)
+    function collectfleche2 (player, fleche2, scoretext)
 {
     fleche2.disableBody(true, true);
 
@@ -418,3 +448,13 @@ function hit4 (bullet, gobelin4) {
 </script>
 </body>
 </html>
+
+/*
+- finir les fleches recuperables;
+- finir les 4 ennemies differents;
+- faire le game over;
+- faire l'ecran titre en scene;
+- faire l'histoire;
+- finir assets;
+
+*/
