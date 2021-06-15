@@ -49,6 +49,8 @@
 var player;
 var fleche;
 var fleche2;
+var fleche3;
+var flecheSeule;
 var platforms;
 var cursors;
 var score = 0;
@@ -244,10 +246,21 @@ function create ()
         setXY: { x: 180, y: 0, stepX: 15 }
     });
 
+    flecheSeule = this.physics.add.group({
+        key: 'fleche',
+        setXY: { x: 600, y: 0, stepX: 15 }
+    });
+
     fleche2 = this.physics.add.group({
         key: 'fleche',
         repeat: 2,
         setXY: { x: 1200, y: 0, stepX: 15 }
+    });
+
+    fleche3 = this.physics.add.group({
+        key: 'fleche',
+        repeat: 2,
+        setXY: { x: 2100, y: 0, stepX: 15 }
     });
 
     //  The score
@@ -276,7 +289,9 @@ function create ()
 
     this.physics.add.collider(player, platforms);
     this.physics.add.collider(fleche, platforms);
-    this.physics.add.collider(fleche2, platforms); 
+    this.physics.add.collider(fleche2, platforms);
+    this.physics.add.collider(fleche3, platforms); 
+    this.physics.add.collider(flecheSeule, platforms);
     this.physics.add.collider(gobelin,platforms);
     this.physics.add.collider(planteCarnivore,platforms);
     this.physics.add.collider(gobelin3,platforms);
@@ -288,10 +303,13 @@ function create ()
     this.physics.add.collider(player,gobelin4,hitgobelin);
     this.physics.add.collider(player,gobelin5,hitgobelin);
     this.physics.add.collider(groupeBullets,platforms);
-   
-    //  Checks to see if the player overlaps with any of the fleche, if he does call the collectSfleche function
+
+    //colllider objets recuperables
 
     this.physics.add.overlap(player, fleche, collectfleche, null, this);
+    this.physics.add.overlap(player, fleche2, collectfleche2, null, this);
+    this.physics.add.overlap(player, fleche3, collectfleche3, null, this);
+    this.physics.add.overlap(player, flecheSeule, collectflecheSeule, null, this);
 
 
     this.physics.add.overlap(groupeBullets, gobelin, hit, null,this);
@@ -345,7 +363,6 @@ function tirer(player) {
         bullet.body.allowGravity =false;
         bullet.setVelocity(1000 * coefDir, 0); // vitesse en x et en y 
 }
-
 
 // commande de clavier
 
@@ -411,6 +428,16 @@ function collectfleche (player, fleche, scoretext)
 
     }
 
+    function collectflecheSeule (player, flecheSeule, scoretext)
+{
+    flecheSeule.disableBody(true, true);
+
+    //  ajout des fleches
+    score += 1;
+    scoreText.setText('fleches: ' + score);
+
+    }
+
     function collectfleche2 (player, fleche2, scoretext)
 {
     fleche2.disableBody(true, true);
@@ -421,6 +448,15 @@ function collectfleche (player, fleche, scoretext)
 
     }
 
+    function collectfleche3 (player, fleche3, scoretext)
+{
+    fleche3.disableBody(true, true);
+
+    //  ajout des fleches
+    score += 1;
+    scoreText.setText('fleches: ' + score);
+
+    }
 
     // fonctions permettant de disparaitre les ennemies toucher et les fleches tuant l'ennemie en question
 
@@ -450,7 +486,7 @@ function hit4 (bullet, gobelin4) {
 </html>
 
 /*
-- finir les fleches recuperables;
+- finir les fleches recuperables a la fin;
 - finir les 4 ennemies differents;
 - faire le game over;
 - faire l'ecran titre en scene;
