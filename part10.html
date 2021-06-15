@@ -62,7 +62,8 @@ var planteCarnivore;
 var gobelin3;
 var gobelin4;
 var gobelin5;
-var hitgobelin
+var hitgobelin;
+var eau;
 var camera;
 var boutonFeu;
 var direction;
@@ -97,6 +98,7 @@ function preload ()
     this.load.spritesheet('dude', 'assets/Ximenia.png', { frameWidth: 166, frameHeight: 80 });
     this.load.image('mort', 'assets/mort.png');
     this.load.spritesheet('gobelin', 'assets/gobelin.png', { frameWidth: 32, frameHeight: 48 });
+    this.load.image('eau', 'assets/eau.png');
 }
 
 function create ()
@@ -155,7 +157,7 @@ function create ()
 
     // perso and ses settings
 
-    player = this.physics.add.sprite(50, 50, 'dude');
+    player = this.physics.add.sprite(2000, 50, 'dude');
     player.setCollideWorldBounds(true);
     var direction = 'right';
     player.body.setSize(80,60);
@@ -166,7 +168,7 @@ function create ()
     gobelin = this.physics.add.sprite(475, 100, 'gobelin');
     gobelin.setCollideWorldBounds(true);
     
-    //gobelin 2
+    //plante carnivore grande
 
     planteCarnivore = this.physics.add.sprite(1850, 200, 'planteCarnivore');
     planteCarnivore.setCollideWorldBounds(true);
@@ -193,6 +195,12 @@ function create ()
     gobelin5.y = Phaser.Math.Between(10,250);
     gobelin5.setBounce(1);
     });*/
+
+    //eau mortel fin du niveau
+
+    eau = this.physics.add.sprite(2500, 458, 'eau');
+    eau.setCollideWorldBounds(true);
+    eau.body.setSize(570,170);
 
 
     //  animation du personnage a aller a droite ou a gauche. 
@@ -306,6 +314,7 @@ function create ()
     this.physics.add.collider(player,gobelin4,hitgobelin);
     this.physics.add.collider(player,gobelin5,hitgobelin);
     this.physics.add.collider(groupeBullets,platforms);
+    this.physics.add.collider(player, eau);
 
     //colllider objets recuperables
 
@@ -315,6 +324,8 @@ function create ()
     this.physics.add.overlap(player, flecheSeule, collectflecheSeule, null, this);
 
     this.physics.add.overlap(player, lance, collectlance, null, this);
+
+    // ennemies tuer
 
     this.physics.add.overlap(groupeBullets, gobelin, hit, null,this);
     this.physics.add.overlap(groupeBullets, planteCarnivore, hit, null,this);
@@ -331,11 +342,11 @@ function create ()
     // game over 
 
     gobelin = this.physics.add.group();
+    eau = this.physics.add.group();
 
-    this.physics.add.collider(gobelin, platforms);
-    this.physics.add.collider(player, gobelin, hitgobelin, null, this);
+    this.physics.add.collider(player, gobelin, hitgobelin, eau, null, this);
 
-function hitgobelin (player, gobelin, gobelin2, gobelin3, gobelin4) {
+function hitgobelin (player, gobelin, gobelin2, gobelin3, gobelin4, eau) {
         this.physics.pause();
         player.setTint(0xff0000);
         player.anims.play('mort');
@@ -344,7 +355,7 @@ function hitgobelin (player, gobelin, gobelin2, gobelin3, gobelin4) {
 
 }
 
-//...........................TEST.PORTE ...................................................
+/*...........................TEST.PORTE ...................................................
 
 function checkOverlap(dude, porte) {
    var boundsA = dude.getBounds();
@@ -353,7 +364,7 @@ function checkOverlap(dude, porte) {
     return (result.width !=0 || result.height!=0 );
 }
 
-//............................................................................
+//............................................................................*/
 
 // fonction permettant de faire apparaitre la fleche ainsi que sa vitesse 
 
@@ -418,7 +429,6 @@ function update ()
               this.scene.start("finish");
             } 
         }
-  
 
 }
 
