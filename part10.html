@@ -99,6 +99,9 @@ function preload ()
     this.load.image('mort', 'assets/mort.png');
     this.load.spritesheet('gobelin', 'assets/gobelin.png', { frameWidth: 32, frameHeight: 48 });
     this.load.image('eau', 'assets/eau.png');
+    this.load.image('commande', 'assets/texte_commande.png');
+    this.load.image('saut', 'assets/saut.png');
+    this.load.image('text1', 'assets/text1.png');
 }
 
 function create ()
@@ -110,6 +113,9 @@ function create ()
     //  The platforms group contains the ground and the 2 ledges we can jump on
     platforms = this.physics.add.staticGroup();
     porte = this.physics.add.staticGroup();
+    commande = this.physics.add.staticGroup();
+    saut = this.physics.add.staticGroup();
+    text1 = this.physics.add.staticGroup();
     
 
     // sol de base doubler de volume 
@@ -128,7 +134,6 @@ function create ()
     platforms.create(25, 175, 'ground')
     platforms.create(1100, 182, 'ground').setScale(1.2).refreshBody();
     platforms.create(810, 335, 'groundcarre');
-    platforms.create(210,363, 'groundVER');
     platforms.create(873,363, 'groundVER');
     platforms.create(475, 150, 'ground2').setScale(0.8).refreshBody();
 
@@ -157,7 +162,7 @@ function create ()
 
     // perso and ses settings
 
-    player = this.physics.add.sprite(2000, 50, 'dude');
+    player = this.physics.add.sprite(50, 50, 'dude');
     player.setCollideWorldBounds(true);
     var direction = 'right';
     player.body.setSize(80,60);
@@ -190,11 +195,8 @@ function create ()
     gobelin5.setCollideWorldBounds(true);
     gobelin5.body.setSize(100,100);
 
-    /*gobelin5.children.iterate(function (gobelin5) {
-    gobelin5.pointsVie=Phaser.Math.Between(3, 3);;
-    gobelin5.y = Phaser.Math.Between(10,250);
-    gobelin5.setBounce(1);
-    });*/
+    gobelin5.pointsVie=Phaser.Math.Between(3, 4);;
+
 
     //eau mortel fin du niveau
 
@@ -281,14 +283,12 @@ function create ()
 
         // --- commandes
 
-    text = this.add.text(100,220, 'commandes:', {fontSize: '25px',fontcolor: '#000', fill: '#999'});
-    text = this.add.text(50,245, 'gauche <     > droite', {fontSize: '20px', fill: '#999'});
-    text = this.add.text(30,265, 'espace pour tirer des fleches', {fontSize: '20px', fill: '#999'});
-    text = this.add.text(700,200, '^ saut', {fontSize: '20px', fill: '#999'});
+    commande.create(150,250,'commande');
+    saut.create(700,200,'saut');
 
         // --- texte histoire / aide 
 
-    text = this.add.text(1000,50, 'une maison de gobelin !', {fontSize: '20px', fill: '#999'});
+    text1.create(1100,50,'text1');
     text = this.add.text(2000,50, 'alors que nos héros continuait leur route', {fontSize: '20px', fill: '#999'});
     text = this.add.text(2000,75, 'Ximenia deteste l eau', {fontSize: '20px', fill: '#999'});
     text = this.add.text(3300,100, 'une porte etrange apparu devant nos heros', {fontSize: '20px', fill: '#000'});
@@ -339,10 +339,10 @@ function create ()
     this.cameras.main.setSize(896, 448);
     this.cameras.main.startFollow(player);
 
+    
     // game over 
 
     gobelin = this.physics.add.group();
-    eau = this.physics.add.group();
 
     this.physics.add.collider(player, gobelin, hitgobelin, eau, null, this);
 
