@@ -102,6 +102,8 @@ function preload ()
     this.load.image('commande', 'assets/texte_commande.png');
     this.load.image('saut', 'assets/saut.png');
     this.load.image('text1', 'assets/text1.png');
+    this.load.image('textFin', 'assets/textFin.png');
+    this.load.image('textEau', 'assets/ximenia_eau.png');
 }
 
 function create ()
@@ -116,6 +118,8 @@ function create ()
     commande = this.physics.add.staticGroup();
     saut = this.physics.add.staticGroup();
     text1 = this.physics.add.staticGroup();
+    textFin = this.physics.add.staticGroup();
+    textEau = this.physics.add.staticGroup();
     
 
     // sol de base doubler de volume 
@@ -159,6 +163,20 @@ function create ()
     platforms.create(4000,300,'ground');
 
     porte.create(3950,220, 'porte');
+
+    // Texte 
+
+        // --- commandes
+
+    commande.create(150,250,'commande');
+    saut.create(700,200,'saut');
+
+        // --- texte histoire / aide 
+
+    text1.create(1100,50,'text1');
+    textEau.create(2000,50,'textEau');
+    textFin.create(3300,150, 'textFin');
+
 
     // perso and ses settings
 
@@ -279,21 +297,7 @@ function create ()
 
     scoreText = this.add.text(16, 16, 'fleches: 0', { fontSize: '25px', fill: '#999' });
 
-    // Texte 
-
-        // --- commandes
-
-    commande.create(150,250,'commande');
-    saut.create(700,200,'saut');
-
-        // --- texte histoire / aide 
-
-    text1.create(1100,50,'text1');
-    text = this.add.text(2000,50, 'alors que nos héros continuait leur route', {fontSize: '20px', fill: '#999'});
-    text = this.add.text(2000,75, 'Ximenia deteste l eau', {fontSize: '20px', fill: '#999'});
-    text = this.add.text(3300,100, 'une porte etrange apparu devant nos heros', {fontSize: '20px', fill: '#000'});
-    text = this.add.text(3300,75, 'alors qu ils avancaient dans la foret', {fontSize: '20px', fill: '#000'});
-    text = this.add.text(3300,125, 'avec une serrure en forme de pointe de lance...', {fontSize: '20px', fill: '#000'});
+    
 
     //  tout les Collider
 
