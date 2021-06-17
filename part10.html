@@ -64,12 +64,15 @@ var gobelin4;
 var gobelin5;
 var hitgobelin;
 var eau;
+var eau2;
 var camera;
 var boutonFeu;
 var direction;
 var bullet;
 var lance;
 var porte;
+var debut = true; 
+var viegobelin5 = 3;
 
 var game = new Phaser.Game(config);
 game.scene.start("world");
@@ -77,9 +80,7 @@ game.scene.start("world");
 
 class selectWorld extends Phaser.Scene{
 
-
 }
-
 
 function preload ()
 {
@@ -104,10 +105,12 @@ function preload ()
     this.load.image('text1', 'assets/text1.png');
     this.load.image('textFin', 'assets/textFin.png');
     this.load.image('textEau', 'assets/ximenia_eau.png');
+    this.load.image('bg', 'assets/tittleScreen.png');
 }
 
 function create ()
 {
+    
     //  background
 
     this.add.image(2000, 224, 'sky');
@@ -211,15 +214,13 @@ function create ()
     gobelin5.setCollideWorldBounds(true);
     gobelin5.body.setSize(100,100);
 
-    gobelin5.pointsVie=Phaser.Math.Between(3, 4);;
-
-
     //eau mortel fin du niveau
 
-    eau = this.physics.add.sprite(2500, 458, 'eau');
-    eau.setCollideWorldBounds(true);
-    eau.body.setSize(570,170);
+    eau = this.physics.add.staticGroup();
+    eau.create(2500, 420, 'eau');
 
+    eau2 = this.physics.add.staticGroup();
+    eau2.create(3500,420, 'eau');
 
     //  animation du personnage a aller a droite ou a gauche. 
 
@@ -317,6 +318,8 @@ function create ()
     this.physics.add.collider(player,gobelin5,hitgobelin);
     this.physics.add.collider(groupeBullets,platforms);
     this.physics.add.collider(player, eau);
+    this.physics.add.collider(player, eau2);
+    this.physics.add.collider(groupeBullets, gobelin4, hit);
 
     //colllider objets recuperables
 
@@ -348,12 +351,14 @@ function create ()
 
     this.physics.add.collider(player, gobelin, hitgobelin, eau, null, this);
 
-function hitgobelin (player, gobelin, gobelin2, gobelin3, gobelin4, eau) {
+function hitgobelin (player, gobelin, gobelin2, gobelin3, gobelin4) {
         this.physics.pause();
         player.setTint(0xff0000);
         player.anims.play('mort');
         this.gameOver = true;
 }
+
+this.bgtitre = this.add.image(0,0, 'bg').setOrigin(0,0);
 
 }
 
@@ -385,6 +390,16 @@ function tirer(player) {
 
 function update ()
 {
+    if ( debut == true){
+        if (cursors.buttonX.isDown)
+        {
+            debut = false;
+        this.bgtitre.setVisible(false);
+    }
+    }
+
+    if (debut == false) {
+
     if (gameOver)
     {
         return;
@@ -420,18 +435,13 @@ function update ()
     tirer(player, direction);
     }
 
-    if (cursors.buttonX.isDown)
-    {
-        //shootBeam
-    }
-
 
     if (Phaser.Input.Keyboard.JustDown(cursors.down)) {
             if (checkOverlap(player, porte)) {
               this.scene.start("finish");
             } 
         }
-
+    }
 }
 
 function collectfleche (player, fleche, scoretext)
@@ -503,10 +513,14 @@ function hit3 (bullet, gobelin3) {
     }
 
 function hit4 (bullet, gobelin4) {
+    viegobelin5 = viegobelin5 -1;
     bullet.destroy();
-    gobelin4.destroy();
+    if (viegobelin5 == 0)
+    {
+        gobelin4.destroy();
     }
-
+    
+    }
 
 </script>
 </body>
@@ -516,7 +530,6 @@ function hit4 (bullet, gobelin4) {
 - finir les fleches recuperables a la fin;
 - finir les 4 ennemies differents;
 - faire le game over;
-- faire l'ecran titre en scene;
 - faire l'histoire;
 - finir assets;
 
