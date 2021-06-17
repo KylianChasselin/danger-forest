@@ -72,6 +72,7 @@ var bullet;
 var lance;
 var porte;
 var debut = true; 
+var viePlante = 2;
 var viegobelin5 = 3;
 
 var game = new Phaser.Game(config);
@@ -205,8 +206,9 @@ function create ()
 
     // gobelin 4
 
-    gobelin4 = this.physics.add.sprite(2500, 200, 'gobelin');
+    gobelin4 = this.physics.add.sprite(2500, 130, 'gobelin');
     gobelin4.setCollideWorldBounds(true);
+    gobelin4.setBounce(1);
 
      // gobelin 5
 
@@ -275,7 +277,7 @@ function create ()
 
     fleche2 = this.physics.add.group({
         key: 'fleche',
-        repeat: 2,
+        repeat: 3,
         setXY: { x: 1200, y: 0, stepX: 15 }
     });
 
@@ -295,8 +297,6 @@ function create ()
     //  The score
 
     scoreText = this.add.text(16, 16, 'fleches: 0', { fontSize: '25px', fill: '#999' });
-
-    
 
     //  tout les Collider
 
@@ -319,7 +319,6 @@ function create ()
     this.physics.add.collider(groupeBullets,platforms);
     this.physics.add.collider(player, eau);
     this.physics.add.collider(player, eau2);
-    this.physics.add.collider(groupeBullets, gobelin4, hit);
 
     //colllider objets recuperables
 
@@ -333,10 +332,10 @@ function create ()
     // ennemies tuer
 
     this.physics.add.overlap(groupeBullets, gobelin, hit, null,this);
-    this.physics.add.overlap(groupeBullets, planteCarnivore, hit, null,this);
+    this.physics.add.overlap(groupeBullets, planteCarnivore, hitPlante, null,this);
     this.physics.add.overlap(groupeBullets, gobelin3, hit, null,this);
     this.physics.add.overlap(groupeBullets, gobelin4, hit, null,this);
-    this.physics.add.overlap(groupeBullets, gobelin5, hit, null,this);
+    this.physics.add.overlap(groupeBullets, gobelin5, hit5, null,this);
 
     //camera 
 
@@ -351,7 +350,7 @@ function create ()
 
     this.physics.add.collider(player, gobelin, hitgobelin, eau, null, this);
 
-function hitgobelin (player, gobelin, gobelin2, gobelin3, gobelin4) {
+function hitgobelin (player, gobelin, planteCarnivore, gobelin3, gobelin4) {
         this.physics.pause();
         player.setTint(0xff0000);
         player.anims.play('mort');
@@ -498,28 +497,37 @@ function collectfleche (player, fleche, scoretext)
     // fonctions permettant de disparaitre les ennemies toucher et les fleches tuant l'ennemie en question
 
 function hit (bullet, gobelin) {
-    bullet.destroy();
     gobelin.destroy();
+        bullet.destroy();
     }
 
-function hit2 (bullet, gobelin2) {
-    bullet.destroy();
-    gobelin2.destroy();
+function hitPlante (bullet, planteCarnivore) {
+    viePlante -= 1;
+    planteCarnivore.destroy();
+    if (viePlante <= 0) {
+        bullet.destroy();
+    }
     }
 
 function hit3 (bullet, gobelin3) {
     bullet.destroy();
     gobelin3.destroy();
+    
     }
 
-function hit4 (bullet, gobelin4) {
-    viegobelin5 = viegobelin5 -1;
-    bullet.destroy();
-    if (viegobelin5 == 0)
-    {
-        gobelin4.destroy();
-    }
+function hit4 (groupeBullets, gobelin4) {
+    groupeBullets.destroy();
+    gobelin4.destroy();
     
+    }
+
+
+function hit5 (bullet, gobelin5) {
+    viegobelin5 -= 1;
+    gobelin5.destroy();
+    if (viegobelin5 <= 0){
+        bullet.destroy();
+    }
     }
 
 </script>
@@ -527,7 +535,7 @@ function hit4 (bullet, gobelin4) {
 </html>
 
 /*
-- finir les fleches recuperables a la fin;
+- finir les fleches dans le stuff;
 - finir les 4 ennemies differents;
 - faire le game over;
 - faire l'histoire;
