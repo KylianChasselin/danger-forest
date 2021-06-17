@@ -34,7 +34,7 @@
         default: 'arcade',
         arcade: {
             gravity: { y: 350 },
-            debug: true
+            debug: false
         }
     },
     scene: {
@@ -248,8 +248,7 @@ function create ()
 
      //  Input Events
 
-     cursors = this.input.keyboard.addKeys({ 'up': Phaser.Input.Keyboard.KeyCodes.UP,
-            'down': Phaser.Input.Keyboard.KeyCodes.DOWN, 
+     cursors = this.input.keyboard.addKeys({ 'up': Phaser.Input.Keyboard.KeyCodes.UP, 
             'left': Phaser.Input.Keyboard.KeyCodes.LEFT,
             'right': Phaser.Input.Keyboard.KeyCodes.RIGHT,
             'space' : Phaser.Input.Keyboard.KeyCodes.SPACE,
@@ -435,12 +434,7 @@ function update ()
     }
 
 
-    if (Phaser.Input.Keyboard.JustDown(cursors.down)) {
-            if (checkOverlap(player, porte)) {
-              this.scene.start("finish");
-            } 
-        }
-    }
+}
 }
 
 function collectfleche (player, fleche, scoretext)
