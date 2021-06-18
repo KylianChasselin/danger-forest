@@ -15,17 +15,6 @@
 
 <script type="text/javascript">
 
-
-
-//....................................................
-
-//import TitleScene from './scene/titleScreen';
-
-//let titleScreen = new titleScreen();
-
-//...................................................
-
-
     var config = {
     type: Phaser.AUTO,
     width: 4000,
@@ -34,7 +23,7 @@
         default: 'arcade',
         arcade: {
             gravity: { y: 350 },
-            debug: false
+            debug: true
         }
     },
     scene: {
@@ -261,7 +250,7 @@ function create ()
 
     groupeBullets= this.physics.add.group();
     
-    //  Some fleches to collect, 12 in total, evenly spaced 70 pixels apart along the x axis
+    //  Spawn des fleches et de leur nombres
 
     fleche = this.physics.add.group({
         key: 'fleche',
@@ -293,11 +282,11 @@ function create ()
         setXY: { x: 950, y: 370}
     });
 
-    //  The score
+    //  Le score
 
     scoreText = this.add.text(16, 16, 'fleches: 0', { fontSize: '25px', fill: '#999' });
 
-    //  tout les Collider
+    //  Tout les Collider
 
     this.physics.add.collider(player, platforms);
     this.physics.add.collider(fleche, platforms);
@@ -319,7 +308,7 @@ function create ()
     this.physics.add.collider(player, eau);
     this.physics.add.collider(player, eau2);
 
-    //colllider objets recuperables
+    // Colllider objets recuperables
 
     this.physics.add.overlap(player, fleche, collectfleche, null, this);
     this.physics.add.overlap(player, fleche2, collectfleche2, null, this);
@@ -328,7 +317,7 @@ function create ()
 
     this.physics.add.overlap(player, lance, collectlance, null, this);
 
-    // ennemies tuer
+    // Ennemies tuer
 
     this.physics.add.overlap(groupeBullets, gobelin, hit, null,this);
     this.physics.add.overlap(groupeBullets, planteCarnivore, hitPlante, null,this);
@@ -336,14 +325,14 @@ function create ()
     this.physics.add.overlap(groupeBullets, gobelin4, hit, null,this);
     this.physics.add.overlap(groupeBullets, gobelin5, hit5, null,this);
 
-    //camera 
+    // Camera 
 
     this.cameras.main.setBounds(0, 0, 4000, 448);
     this.cameras.main.setSize(896, 448);
     this.cameras.main.startFollow(player);
 
     
-    // game over 
+    // Game over 
 
     gobelin = this.physics.add.group();
 
@@ -360,26 +349,13 @@ this.bgtitre = this.add.image(0,0, 'bg').setOrigin(0,0);
 
 }
 
-/*...........................TEST.PORTE ...................................................
-
-function checkOverlap(dude, porte) {
-   var boundsA = dude.getBounds();
-   var boundsB = porte.getBounds();
-    var result = Phaser.Geom.Rectangle.Intersection(boundsA, boundsB);
-    return (result.width !=0 || result.height!=0 );
-}
-
-//............................................................................*/
-
 // fonction permettant de faire apparaitre la fleche ainsi que sa vitesse 
 
 function tirer(player) {    
     
     var coefDir;
 	    if (player.direction == 'left') { coefDir = -1; } else { coefDir = 1 }
-        // on crée la balle a coté du joueur
         var bullet = groupeBullets.create(player.x + (25 * coefDir), player.y - 10, 'beam');
-        // parametres physiques de la balle.
         bullet.body.allowGravity =false;
         bullet.setVelocity(1000 * coefDir, 0); // vitesse en x et en y 
 }
@@ -432,8 +408,6 @@ function update ()
     if ( Phaser.Input.Keyboard.JustDown(boutonFeu)) {
     tirer(player, direction);
     }
-
-
 }
 }
 
@@ -530,7 +504,7 @@ function hit5 (bullet, gobelin5) {
 
 /*
 - finir les fleches dans le stuff;
-- finir les 4 ennemies differents;
+- finir les 4 ennemies differents en assets;
 - faire le game over;
 - faire l'histoire;
 - finir assets;
