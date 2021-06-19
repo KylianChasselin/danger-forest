@@ -1,7 +1,533 @@
-<!DOCTYPE html>
-<html>
+<!doctype html> 
+<html lang="en"> 
+<head> 
+    <meta charset="UTF-8" />
+    <title>FOREST-DANGER </title>
+    <script src="//cdn.jsdelivr.net/npm/phaser@3.11.0/dist/phaser.js"></script>
+    <script type="text/javascript" src= "scene/test.js"></script>
+    <style type="text/css">
+        body {
+            margin: 0;
+        }
+    </style>
+</head>
 <body>
-<h1>Hello World</h1>
-<p>I'm hosted with GitHub Pages.</p>
+
+<script type="text/javascript">
+
+    var config = {
+    type: Phaser.AUTO,
+    width: 4000,
+    height: 448,
+    physics: {
+        default: 'arcade',
+        arcade: {
+            gravity: { y: 350 },
+            debug: false
+        }
+    },
+    scene: {
+            preload: preload,
+            create: create,
+            update: update
+        }
+}
+
+// les variables presentes dans le code
+
+var player;
+var fleche;
+var fleche2;
+var fleche3;
+var flecheSeule;
+var platforms;
+var cursors;
+var score = 0;
+var text;
+var gameOver = false;
+var scoreText;
+var gobelin;
+var planteCarnivore;
+var gobelin3;
+var gobelin4;
+var gobelin5;
+var hitgobelin;
+var eau;
+var eau2;
+var camera;
+var boutonFeu;
+var direction;
+var bullet;
+var lance;
+var porte;
+var debut = true; 
+var viePlante = 2;
+var viegobelin5 = 3;
+
+var game = new Phaser.Game(config);
+game.scene.start("world");
+
+
+class selectWorld extends Phaser.Scene{
+
+}
+
+function preload ()
+{
+    // toute les images presente dasn le jeu 
+    this.load.image('sky', 'assets/sky.png');
+    this.load.image('ground', 'assets/platform.png');
+    this.load.image('bleu', 'assets/arbre_bleu.png');
+    this.load.image('ground2', 'assets/platform2.png');
+    this.load.image('groundVER', 'assets/platformVer.png');
+    this.load.image('groundcarre', 'assets/platformcarre.png');
+    this.load.image('fleche', 'assets/flecheverticale.png');
+    this.load.image('beam', 'assets/fleche.png');
+    this.load.image('lance','assets/lance.png');
+    this.load.image('porte','assets/porte.png');
+    this.load.image('planteCarnivore', 'assets/plante_carnivore.png');
+    this.load.spritesheet('dude', 'assets/Ximenia.png', { frameWidth: 166, frameHeight: 80 });
+    this.load.image('mort', 'assets/mort.png');
+    this.load.spritesheet('gobelin', 'assets/gobelin.png', { frameWidth: 32, frameHeight: 48 });
+    this.load.image('eau', 'assets/eau.png');
+    this.load.image('commande', 'assets/texte_commande.png');
+    this.load.image('saut', 'assets/saut.png');
+    this.load.image('text1', 'assets/text1.png');
+    this.load.image('textFin', 'assets/textFin.png');
+    this.load.image('textEau', 'assets/ximenia_eau.png');
+    this.load.image('bg', 'assets/tittleScreen.png');
+    this.load.image('bgHistoire', 'assets/tittleScreen.png');
+}
+
+function create ()
+{
+    
+    //  background
+
+    this.add.image(2000, 224, 'sky');
+
+    //  The platforms group contains the ground and the 2 ledges we can jump on
+    platforms = this.physics.add.staticGroup();
+    porte = this.physics.add.staticGroup();
+    commande = this.physics.add.staticGroup();
+    saut = this.physics.add.staticGroup();
+    text1 = this.physics.add.staticGroup();
+    textFin = this.physics.add.staticGroup();
+    textEau = this.physics.add.staticGroup();
+    
+
+    // sol de base doubler de volume 
+
+    platforms.create(400, 415, 'ground').setScale(2).refreshBody();
+    platforms.create(1200, 415, 'ground').setScale(2).refreshBody();
+    platforms.create(2000, 415, 'ground').setScale(2).refreshBody();
+    platforms.create(2800, 415, 'ground').setScale(2).refreshBody();
+    platforms.create(3600, 415, 'ground').setScale(2).refreshBody();
+    
+
+    //  PLATEFORME ET EMPLACEMENT
+
+    // Premiere partie
+    
+    platforms.create(25, 175, 'ground')
+    platforms.create(1100, 182, 'ground').setScale(1.2).refreshBody();
+    platforms.create(810, 335, 'groundcarre');
+    platforms.create(873,363, 'groundVER');
+    platforms.create(475, 170, 'ground2').setScale(0.8).refreshBody();
+
+    // Deuxieme partie
+    
+    platforms.create(1750,325,'groundcarre').setScale(1.5).refreshBody();
+    platforms.create(2045,160,'ground').setScale(0.8).refreshBody();
+    platforms.create(1900,363,'groundVER');
+    
+    // Troisieme partie
+
+    platforms.create(2189,363,'groundVER');
+    platforms.create(2500,275,'ground').setScale(0.6).refreshBody();
+    platforms.create(2800,460,'groundVER');
+    platforms.create(2900,270,'ground').setScale(0.6).refreshBody();
+
+    // Quatrieme partie
+
+    platforms.create(3005,460,'groundVER');
+    platforms.create(3050,370,'groundcarre');
+    platforms.create(3145,370,'groundcarre');
+    platforms.create(3550,330,'ground').setScale(0.6).refreshBody();
+    platforms.create(4000,300,'ground');
+
+    porte.create(3950,220, 'porte');
+
+    // Texte 
+
+        // --- commandes
+
+    commande.create(300,250,'commande');
+    saut.create(700,200,'saut');
+
+        // --- texte histoire / aide 
+
+    text1.create(1100,50,'text1');
+    textEau.create(2000,50,'textEau');
+    textFin.create(3300,150, 'textFin');
+
+    // perso and ses settings
+
+    player = this.physics.add.sprite(50, 50, 'dude');
+    player.setCollideWorldBounds(true);
+    var direction = 'right';
+    player.body.setSize(80,60);
+
+    //gobelin
+
+    gobelin = this.physics.add.sprite(475, 100, 'gobelin');
+    gobelin.setCollideWorldBounds(true);
+    
+    //plante carnivore grande
+
+    planteCarnivore = this.physics.add.sprite(1850, 200, 'planteCarnivore');
+    planteCarnivore.setCollideWorldBounds(true);
+    planteCarnivore.body.setSize(50,300);
+
+    //gobelin 3 
+
+    gobelin3 = this.physics.add.sprite(1230, 250, 'gobelin');
+    gobelin3.setCollideWorldBounds(true);
+
+    // gobelin 4
+
+    gobelin4 = this.physics.add.sprite(2500, 130, 'gobelin');
+    gobelin4.setCollideWorldBounds(true);
+    gobelin4.setBounce(1);
+
+     // gobelin 5
+
+    gobelin5 = this.physics.add.sprite(1100, 200, 'gobelin');
+    gobelin5.setCollideWorldBounds(true);
+    gobelin5.body.setSize(100,100);
+
+    //eau mortel fin du niveau
+
+    eau = this.physics.add.staticGroup();
+    eau.create(2500, 420, 'eau');
+
+    eau2 = this.physics.add.staticGroup();
+    eau2.create(3500,420, 'eau');
+
+    //  animation du personnage a aller a droite ou a gauche. 
+
+    this.anims.create({
+        key: 'left',
+        frames: this.anims.generateFrameNumbers('dude', { start: 0, end: 15 }),
+        frameRate: 20,
+        repeat: -1
+    });
+
+    this.anims.create({
+        key: 'turn',
+        frames: [ { key: 'dude', frame: 18 } ],
+        frameRate: 20
+    });
+
+    this.anims.create({
+        key: 'right',
+        frames: this.anims.generateFrameNumbers('dude', { start: 16, end: 29 }),
+        frameRate: 20,
+        repeat: -1
+    });
+
+     //  Input Events
+
+     cursors = this.input.keyboard.addKeys({ 'up': Phaser.Input.Keyboard.KeyCodes.UP, 
+            'left': Phaser.Input.Keyboard.KeyCodes.LEFT,
+            'right': Phaser.Input.Keyboard.KeyCodes.RIGHT,
+            'space' : Phaser.Input.Keyboard.KeyCodes.SPACE,
+            'buttonX' : Phaser.Input.Keyboard.KeyCodes.X,
+        });
+
+    // bouton Feu 
+
+    boutonFeu = this.input.keyboard.addKey('space');
+
+    groupeBullets= this.physics.add.group();
+    
+    //  Spawn des fleches et de leur nombres
+
+    fleche = this.physics.add.group({
+        key: 'fleche',
+        repeat: 2,
+        setXY: { x: 180, y: 0, stepX: 15 }
+    });
+
+    flecheSeule = this.physics.add.group({
+        key: 'fleche',
+        setXY: { x: 600, y: 0, stepX: 15 }
+    });
+
+    fleche2 = this.physics.add.group({
+        key: 'fleche',
+        repeat: 3,
+        setXY: { x: 1200, y: 0, stepX: 15 }
+    });
+
+    fleche3 = this.physics.add.group({
+        key: 'fleche',
+        repeat: 2,
+        setXY: { x: 2100, y: 0, stepX: 15 }
+    });
+
+    // recuperation de la lance 
+
+    lance = this.physics.add.group({
+        key: 'lance',
+        setXY: { x: 950, y: 370}
+    });
+
+    //  Le score
+
+    scoreText = this.add.text(16, 16, 'fleches: 0', { fontSize: '25px', fill: '#999' });
+
+    //  Tout les Collider
+
+    this.physics.add.collider(player, platforms);
+    this.physics.add.collider(fleche, platforms);
+    this.physics.add.collider(fleche2, platforms);
+    this.physics.add.collider(fleche3, platforms); 
+    this.physics.add.collider(flecheSeule, platforms);
+    this.physics.add.collider(lance, platforms);
+    this.physics.add.collider(gobelin,platforms);
+    this.physics.add.collider(planteCarnivore,platforms);
+    this.physics.add.collider(gobelin3,platforms);
+    this.physics.add.collider(gobelin4,platforms);
+    this.physics.add.collider(gobelin5,platforms);
+    this.physics.add.collider(player,gobelin,hitgobelin);
+    this.physics.add.collider(player,planteCarnivore,hitgobelin);
+    this.physics.add.collider(player,gobelin3,hitgobelin);
+    this.physics.add.collider(player,gobelin4,hitgobelin);
+    this.physics.add.collider(player,gobelin5,hitgobelin);
+    this.physics.add.collider(groupeBullets,platforms);
+    this.physics.add.collider(player, eau);
+    this.physics.add.collider(player, eau2);
+
+    // Colllider objets recuperables
+
+    this.physics.add.overlap(player, fleche, collectfleche, null, this);
+    this.physics.add.overlap(player, fleche2, collectfleche2, null, this);
+    this.physics.add.overlap(player, fleche3, collectfleche3, null, this);
+    this.physics.add.overlap(player, flecheSeule, collectflecheSeule, null, this);
+
+    this.physics.add.overlap(player, lance, collectlance, null, this);
+
+    // Ennemies tuer
+
+    this.physics.add.overlap(groupeBullets, gobelin, hit, null,this);
+    this.physics.add.overlap(groupeBullets, planteCarnivore, hitPlante, null,this);
+    this.physics.add.overlap(groupeBullets, gobelin3, hit, null,this);
+    this.physics.add.overlap(groupeBullets, gobelin4, hit, null,this);
+    this.physics.add.overlap(groupeBullets, gobelin5, hit5, null,this);
+
+    // Camera 
+
+    this.cameras.main.setBounds(0, 0, 4000, 448);
+    this.cameras.main.setSize(896, 448);
+    this.cameras.main.startFollow(player);
+
+    // Game over 
+
+    gobelin = this.physics.add.group();
+
+    this.physics.add.collider(player, gobelin, hitgobelin, eau, null, this);
+
+function hitgobelin (player, gobelin, planteCarnivore, gobelin3, gobelin4) {
+   
+   
+   //..............................................................
+    
+   this.input.on('pointerdown', function (player) {
+            if (this.anims.paused)
+            {
+                this.anims.resumeAll();
+            }
+            else
+            {
+                this.anims.pauseAll();
+            }
+        }, this);
+
+
+    //......................................................
+        player.anims.play('mort');
+        this.gameOver = true;
+}
+
+this.bgtitre = this.add.image(0,0, 'bg').setOrigin(0,0);
+
+
+}
+
+// fonction permettant de faire apparaitre la fleche ainsi que sa vitesse 
+
+function tirer(player) {    
+    
+    var coefDir;
+	    if (player.direction == 'left') { coefDir = -1; } else { coefDir = 1 }
+        var bullet = groupeBullets.create(player.x + (25 * coefDir), player.y - 10, 'beam');
+        bullet.body.allowGravity =false;
+        bullet.setVelocity(1000 * coefDir, 0); // vitesse en x et en y 
+}
+
+// commande de clavier
+
+function update ()
+{
+    if ( debut == true){
+        if (cursors.buttonX.isDown)
+        {
+            debut = false;
+        this.bgtitre.setVisible(false);
+    }
+    }
+
+    if (debut == false) {
+
+    if (gameOver)
+    {
+        return;
+    }
+
+    if (cursors.left.isDown)
+    {   
+        player.direction = 'left';
+        player.setVelocityX(-160);
+        player.anims.play('left', true);
+    }
+
+    else if (cursors.right.isDown)
+    {
+        player.direction = 'right';
+        player.setVelocityX(160);
+        player.anims.play('right', true);
+    }
+    else
+    {
+        player.setVelocityX(0);
+
+        player.anims.play('turn');
+    }
+
+    if (cursors.up.isDown && player.body.touching.down)
+    {
+        player.setVelocityY(-330);
+    }
+
+
+    if ( Phaser.Input.Keyboard.JustDown(boutonFeu)) {
+    tirer(player, direction);
+    }
+}
+}
+
+function collectfleche (player, fleche, scoretext)
+{
+    fleche.disableBody(true, true);
+
+    //  ajout des fleches
+    score += 1;
+    scoreText.setText('fleches: ' + score);
+
+    }
+
+    function collectflecheSeule (player, flecheSeule, scoretext)
+{
+    flecheSeule.disableBody(true, true);
+
+    //  ajout des fleches
+    score += 1;
+    scoreText.setText('fleches: ' + score);
+
+    }
+
+    function collectfleche2 (player, fleche2, scoretext)
+{
+    fleche2.disableBody(true, true);
+
+    //  ajout des fleches
+    score += 1;
+    scoreText.setText('fleches: ' + score);
+
+    }
+
+    function collectfleche3 (player, fleche3, scoretext)
+{
+    fleche3.disableBody(true, true);
+
+    //  ajout des fleches
+    score += 1;
+    scoreText.setText('fleches: ' + score);
+
+    }
+
+
+    function collectlance (player, lance, scoretext)
+{
+    lance.disableBody(true, true);
+
+    //  ajout des fleches
+    score += 1;
+    scoreText.setText('fleches: ' + score);
+
+    }
+
+    // fonctions permettant de disparaitre les ennemies toucher et les fleches tuant l'ennemie en question
+
+function hit (bullet, gobelin) {
+    gobelin.destroy();
+        bullet.destroy();
+    }
+
+function hitPlante (bullet, planteCarnivore) {
+    viePlante -= 1;
+    planteCarnivore.destroy();
+    if (viePlante <= 0) {
+        bullet.destroy();
+    }
+    }
+
+function hit3 (bullet, gobelin3) {
+    bullet.destroy();
+    gobelin3.destroy();
+    
+    }
+
+function hit4 (groupeBullets, gobelin4) {
+    groupeBullets.destroy();
+    gobelin4.destroy();
+    
+    }
+
+
+function hit5 (bullet, gobelin5) {
+    viegobelin5 -= 1;
+    gobelin5.destroy();
+    if (viegobelin5 <= 0){
+        bullet.destroy();
+    }
+
+function mort (player) {
+    sprite.body.reset(50, 50);
+}
+
+
+}
+</script>
 </body>
 </html>
+
+/*
+- eau mortel;
+- finir les fleches dans le stuff;
+- finir les 4 ennemies differents en assets;
+- faire le game over;
+- faire l'histoire;
+- finir assets;
+*/
