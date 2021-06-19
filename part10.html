@@ -23,7 +23,7 @@
         default: 'arcade',
         arcade: {
             gravity: { y: 350 },
-            debug: true
+            debug: false
         }
     },
     scene: {
@@ -96,6 +96,7 @@ function preload ()
     this.load.image('textFin', 'assets/textFin.png');
     this.load.image('textEau', 'assets/ximenia_eau.png');
     this.load.image('bg', 'assets/tittleScreen.png');
+    this.load.image('bgHistoire', 'assets/tittleScreen.png');
 }
 
 function create ()
@@ -331,7 +332,6 @@ function create ()
     this.cameras.main.setSize(896, 448);
     this.cameras.main.startFollow(player);
 
-    
     // Game over 
 
     gobelin = this.physics.add.group();
@@ -339,13 +339,29 @@ function create ()
     this.physics.add.collider(player, gobelin, hitgobelin, eau, null, this);
 
 function hitgobelin (player, gobelin, planteCarnivore, gobelin3, gobelin4) {
-        this.physics.pause();
-        player.setTint(0xff0000);
+   
+   
+   //..............................................................
+    
+   this.input.on('pointerdown', function (player) {
+            if (this.anims.paused)
+            {
+                this.anims.resumeAll();
+            }
+            else
+            {
+                this.anims.pauseAll();
+            }
+        }, this);
+
+
+    //......................................................
         player.anims.play('mort');
         this.gameOver = true;
 }
 
 this.bgtitre = this.add.image(0,0, 'bg').setOrigin(0,0);
+
 
 }
 
@@ -496,17 +512,22 @@ function hit5 (bullet, gobelin5) {
     if (viegobelin5 <= 0){
         bullet.destroy();
     }
-    }
 
+function mort (player) {
+    sprite.body.reset(50, 50);
+}
+
+
+}
 </script>
 </body>
 </html>
 
 /*
+- eau mortel;
 - finir les fleches dans le stuff;
 - finir les 4 ennemies differents en assets;
 - faire le game over;
 - faire l'histoire;
 - finir assets;
-
 */
