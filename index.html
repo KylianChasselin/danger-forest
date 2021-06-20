@@ -340,7 +340,6 @@ function create ()
 
 function hitgobelin (player, gobelin, planteCarnivore, gobelin3, gobelin4) {
    
-   
    //..............................................................
     
    this.input.on('pointerdown', function (player) {
@@ -354,14 +353,12 @@ function hitgobelin (player, gobelin, planteCarnivore, gobelin3, gobelin4) {
             }
         }, this);
 
-
     //......................................................
         player.anims.play('mort');
         this.gameOver = true;
 }
 
 this.bgtitre = this.add.image(0,0, 'bg').setOrigin(0,0);
-
 
 }
 
@@ -467,7 +464,6 @@ function collectfleche (player, fleche, scoretext)
 
     }
 
-
     function collectlance (player, lance, scoretext)
 {
     lance.disableBody(true, true);
@@ -504,7 +500,6 @@ function hit4 (groupeBullets, gobelin4) {
     gobelin4.destroy();
     
     }
-
 
 function hit5 (bullet, gobelin5) {
     viegobelin5 -= 1;
