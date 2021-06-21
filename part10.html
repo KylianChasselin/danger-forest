@@ -89,6 +89,7 @@ function preload ()
     this.load.spritesheet('dude', 'assets/Ximenia.png', { frameWidth: 166, frameHeight: 80 });
     this.load.image('mort', 'assets/mort.png');
     this.load.spritesheet('gobelin', 'assets/gobelin.png', { frameWidth: 32, frameHeight: 48 });
+    this.load.spritesheet('troll', 'assets/troll.png', { frameWidth: 64, frameHeight: 96 });
     this.load.image('eau', 'assets/eau.png');
     this.load.image('commande', 'assets/texte_commande.png');
     this.load.image('saut', 'assets/saut.png');
@@ -115,7 +116,6 @@ function create ()
     textFin = this.physics.add.staticGroup();
     textEau = this.physics.add.staticGroup();
     
-
     // sol de base doubler de volume 
 
     platforms.create(400, 415, 'ground').setScale(2).refreshBody();
@@ -124,7 +124,6 @@ function create ()
     platforms.create(2800, 415, 'ground').setScale(2).refreshBody();
     platforms.create(3600, 415, 'ground').setScale(2).refreshBody();
     
-
     //  PLATEFORME ET EMPLACEMENT
 
     // Premiere partie
@@ -202,7 +201,7 @@ function create ()
 
      // gobelin 5
 
-    gobelin5 = this.physics.add.sprite(1100, 200, 'gobelin');
+    gobelin5 = this.physics.add.sprite(1100, 200, 'troll');
     gobelin5.setCollideWorldBounds(true);
     gobelin5.body.setSize(100,100);
 
@@ -325,6 +324,7 @@ function create ()
     this.physics.add.overlap(groupeBullets, gobelin3, hit, null,this);
     this.physics.add.overlap(groupeBullets, gobelin4, hit, null,this);
     this.physics.add.overlap(groupeBullets, gobelin5, hit5, null,this);
+    this.physics.add.overlap(groupeBullets, eau, hit5, null,this);
 
     // Camera 
 
@@ -338,8 +338,7 @@ function create ()
 
     this.physics.add.collider(player, gobelin, hitgobelin, eau, null, this);
 
-function hitgobelin (player, gobelin, planteCarnivore, gobelin3, gobelin4) {
-   
+function hitgobelin (player, gobelin, planteCarnivore, gobelin3, gobelin4, eau) {
    
    //..............................................................
     
@@ -354,14 +353,12 @@ function hitgobelin (player, gobelin, planteCarnivore, gobelin3, gobelin4) {
             }
         }, this);
 
-
     //......................................................
         player.anims.play('mort');
         this.gameOver = true;
 }
 
 this.bgtitre = this.add.image(0,0, 'bg').setOrigin(0,0);
-
 
 }
 
@@ -386,7 +383,6 @@ function update ()
             debut = false;
         this.bgtitre.setVisible(false);
     }
-
     }
 
     if (debut == false) {
@@ -412,7 +408,6 @@ function update ()
     else
     {
         player.setVelocityX(0);
-
         player.anims.play('turn');
     }
 
@@ -420,7 +415,6 @@ function update ()
     {
         player.setVelocityY(-330);
     }
-
 
     if ( Phaser.Input.Keyboard.JustDown(boutonFeu)) {
     tirer(player, direction);
@@ -468,7 +462,6 @@ function collectfleche (player, fleche, scoretext)
 
     }
 
-
     function collectlance (player, lance, scoretext)
 {
     lance.disableBody(true, true);
@@ -506,27 +499,16 @@ function hit4 (groupeBullets, gobelin4) {
     
     }
 
-
 function hit5 (bullet, gobelin5) {
     viegobelin5 -= 1;
     gobelin5.destroy();
     if (viegobelin5 <= 0){
         bullet.destroy();
     }
-
-function mort (player) {
-    sprite.body.reset(50, 50);
-}
-
-
 }
 </script>
 </body>
 </html>
-
 - eau mortel;
 - finir les fleches dans le stuff;
-- finir les 4 ennemies differents en assets;
 - faire le game over;
-- faire l'histoire;
-- finir assets;
