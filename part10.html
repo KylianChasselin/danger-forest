@@ -4,7 +4,6 @@
     <meta charset="UTF-8" />
     <title>FOREST-DANGER </title>
     <script src="//cdn.jsdelivr.net/npm/phaser@3.11.0/dist/phaser.js"></script>
-    <script type="text/javascript" src= "scene/test.js"></script>
     <style type="text/css">
         body {
             margin: 0;
@@ -98,6 +97,8 @@ function preload ()
     this.load.image('textEau', 'assets/ximenia_eau.png');
     this.load.image('bg', 'assets/tittleScreen.png');
     this.load.image('histoire', 'assets/histoire.png');
+
+    this.load.audio('music', 'assets/music.ogg');
 }
 
 function create ()
@@ -106,6 +107,11 @@ function create ()
     //  background
 
     this.add.image(2000, 224, 'sky');
+
+    // musique 
+
+    this.sound.add('music');
+    this.sound.play('music');
 
     //  The platforms group contains the ground and the 2 ledges we can jump on
     platforms = this.physics.add.staticGroup();
@@ -284,8 +290,8 @@ function create ()
 
     //  Stock de fleche restant (reste plus qu'a faire suivre le text a la camera qu'on puisse avoir le texte en permanence)
 
-    scoreText = this.add.text(16, 16, 'fleches: 0', { fontSize: '25px', fill: '#999', backgroundColor: "#00000" });
-
+    scoreText = this.add.text(16, 16, 'fleches: 0', { fontSize: '25px', fill: '#999', backgroundColor: "#006117" });
+    
     //  Tout les Collider
 
     this.physics.add.collider(player, platforms);
