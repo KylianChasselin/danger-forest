@@ -22,7 +22,7 @@
         default: 'arcade',
         arcade: {
             gravity: { y: 350 },
-            debug: false
+            debug: true
         }
     },
     scene: {
@@ -66,7 +66,6 @@ var viegobelin5 = 3;
 var game = new Phaser.Game(config);
 game.scene.start("world");
 
-
 class selectWorld extends Phaser.Scene{
 
 }
@@ -97,13 +96,12 @@ function preload ()
     this.load.image('textEau', 'assets/ximenia_eau.png');
     this.load.image('bg', 'assets/tittleScreen.png');
     this.load.image('histoire', 'assets/histoire.png');
-
+    this.load.image('gameOverText', 'assets/tittleScreen.png')
     this.load.audio('music', 'assets/music.ogg');
 }
 
 function create ()
 {
-    
     //  background
 
     this.add.image(2000, 224, 'sky');
@@ -162,7 +160,7 @@ function create ()
     platforms.create(4000,300,'ground');
 
     porte.create(3950,220, 'porte');
-
+    
     // Texte 
 
         // --- commandes
@@ -235,6 +233,12 @@ function create ()
     });
 
     this.anims.create({
+        key: 'mort',
+        frames: [ { key: 'mort', frame: 0 } ],
+        frameRate: 20
+    });
+
+    this.anims.create({
         key: 'right',
         frames: this.anims.generateFrameNumbers('dude', { start: 16, end: 29 }),
         frameRate: 20,
@@ -292,6 +296,13 @@ function create ()
 
     scoreText = this.add.text(16, 16, 'fleches: 0', { fontSize: '25px', fill: '#999', backgroundColor: "#006117" });
     
+
+    //texte game over
+
+   /* gameOverText = this.add.text(500, 220, 'GAME OVER', { fontSize: '25px', fill: '#999', backgroundColor: "#00000" });
+    this.gameOverText.setVisible(false);*/
+    
+    
     //  Tout les Collider
 
     this.physics.add.collider(player, platforms);
@@ -313,6 +324,7 @@ function create ()
     this.physics.add.collider(groupeBullets,platforms);
     this.physics.add.collider(player, eau);
     this.physics.add.collider(player, eau2);
+    this.physics.add.collider(player,porte);
 
     // Colllider objets recuperables
 
@@ -320,7 +332,6 @@ function create ()
     this.physics.add.overlap(player, fleche2, collectfleche2, null, this);
     this.physics.add.overlap(player, fleche3, collectfleche3, null, this);
     this.physics.add.overlap(player, flecheSeule, collectflecheSeule, null, this);
-
     this.physics.add.overlap(player, lance, collectlance, null, this);
 
     // Ennemies tuer
@@ -345,24 +356,19 @@ function create ()
     this.physics.add.collider(player, gobelin, hitgobelin, eau, null, this);
 
 function hitgobelin (player, gobelin, planteCarnivore, gobelin3, gobelin4, eau) {
-   
-   //..............................................................
     
-   this.input.on('pointerdown', function (player) {
-            if (this.anims.paused)
-            {
-                this.anims.resumeAll();
-            }
-            else
-            {
-                this.anims.pauseAll();
-            }
-        }, this);
-
-    //......................................................
-        player.anims.play('mort');
-        this.gameOver = true;
+    this.physics.pause();
+    this.physics.resume();
+    player.anims.play('mort');
+    this.gameOver = true;
+    this.gameOverText.visible = true
 }
+
+function finish (player, porte, lance) {
+    
+}
+
+    //debut du jeu ecran titre
 
 this.bgtitre = this.add.image(0,0, 'bg').setOrigin(0,0);
 
@@ -478,6 +484,15 @@ function collectfleche (player, fleche, scoretext)
 
     }
 
+    // function enlevant des fleches au stuff ( pas fini)
+
+    function stuffFleche ( player,fleche,scoreText)
+    {
+        score -= 1;
+        scoretext.setText('fleches: ' + score);
+    }
+
+
     // fonctions permettant de disparaitre les ennemies toucher et les fleches tuant l'ennemie en question
 
 function hit (bullet, gobelin) {
@@ -502,7 +517,7 @@ function hit3 (bullet, gobelin3) {
 function hit4 (groupeBullets, gobelin4) {
     groupeBullets.destroy();
     gobelin4.destroy();
-    
+
     }
 
 function hit5 (bullet, gobelin5) {
@@ -515,6 +530,3 @@ function hit5 (bullet, gobelin5) {
 </script>
 </body>
 </html>
-- eau mortel;
-- finir les fleches dans le stuff;
-- faire le game over;
